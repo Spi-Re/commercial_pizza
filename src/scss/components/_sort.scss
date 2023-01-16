@@ -1,6 +1,7 @@
 @import '../variables';
 
 .sort {
+  cursor: default;
   position: relative;
   &__label {
     display: flex;

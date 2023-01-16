@@ -12,12 +12,11 @@ function PizzaBlock({ imageUrl, title, price, sizes, types }) {
       <div className="pizza-block__selector">
         <ul>
           {types.map((type, index) => {
-            const key = Math.random();
             return (
               <li
+                key={type}
                 onClick={() => setDoughType(index)}
-                className={index === doughType ? 'active' : ''}
-                key={key}>
+                className={index === doughType ? 'active' : ''}>
                 {pizzasTypes[type]}
               </li>
             );
@@ -25,12 +24,11 @@ function PizzaBlock({ imageUrl, title, price, sizes, types }) {
         </ul>
         <ul>
           {sizes.map((size, index) => {
-            const key = Math.random();
             return (
               <li
+                key={size}
                 onClick={() => setPizzaSize(index)}
-                className={index === pizzaSize ? 'active' : ''}
-                key={key}>
+                className={index === pizzaSize ? 'active' : ''}>
                 {size} см.
               </li>
             );

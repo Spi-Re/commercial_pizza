@@ -8,6 +8,8 @@ import PizzaBlock from './components/PizzaBlock';
 import mochPizzas from './assets/mochPizzas';
 
 function App() {
+  function foo(bar) {}
+
   return (
     <div className="wrapper">
       <Header />

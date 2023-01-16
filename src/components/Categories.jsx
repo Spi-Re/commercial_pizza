@@ -8,12 +8,12 @@ const Categories = () => {
   return (
     <div className="categories">
       <ul>
-        {pizzasCategories.map((category, categoryId) => {
+        {pizzasCategories.map((category, categoryIndex) => {
           return (
             <li
-              key={categoryId}
-              onClick={() => setChosenCategory(categoryId)}
-              className={chosenCategory === categoryId ? 'active' : ''}>
+              key={categoryIndex}
+              onClick={() => setChosenCategory(categoryIndex)}
+              className={chosenCategory === categoryIndex ? 'active' : ''}>
               {category}
             </li>
           );
