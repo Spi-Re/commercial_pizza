@@ -8,12 +8,8 @@ function Sort() {
   return (
     <div
       className="sort"
-      onPointerDown={(event) => event.preventDefault()}
       onPointerUp={(event) => {
-        event.preventDefault();
-        const variants = event.target.closest('li') ? 'li' : '.sort__label span';
-
-        event.target.closest(variants) && setIsVisible((visible) => !visible);
+        event.target.closest('.for-selection') && setIsVisible((visible) => !visible);
       }}>
       <div className="sort__label">
         <svg
@@ -28,7 +24,7 @@ function Sort() {
           />
         </svg>
         <b>Sort by:</b>
-        <span>{sortTypes[selectedType]}</span>
+        <span className="for-selection">{sortTypes[selectedType]}</span>
       </div>
       {isVisible && (
         <div className="sort__popup">
@@ -38,7 +34,7 @@ function Sort() {
                 <li
                   key={index}
                   onPointerUp={() => setSelecntedType(index)}
-                  className={selectedType === index ? 'active' : ''}>
+                  className={selectedType === index ? `active for-selection` : `for-selection`}>
                   {type}
                 </li>
               );

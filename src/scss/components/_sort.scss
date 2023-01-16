@@ -1,6 +1,7 @@
 @import '../variables';
 
 .sort {
+  user-select: none;
   cursor: default;
   position: relative;
   &__label {

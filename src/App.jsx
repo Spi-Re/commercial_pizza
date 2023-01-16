@@ -5,10 +5,15 @@ import Header from './components/Header';
 import Categories from './components/Categories';
 import Sort from './components/Sort';
 import PizzaBlock from './components/PizzaBlock';
-import mochPizzas from './assets/mochPizzas';
 
 function App() {
-  function foo(bar) {}
+  const [items, setItems] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch('https://63c56aabf3a73b347855bbb1.mockapi.io/pizzas')
+      .then((res) => res.json())
+      .then((res) => setItems(res));
+  }, []);
 
   return (
     <div className="wrapper">
@@ -21,7 +26,7 @@ function App() {
           </div>
           <h2 className="content__title">All Pizzas</h2>
           <div className="content__items">
-            {mochPizzas.map((item) => {
+            {items.map((item) => {
               return <PizzaBlock key={item.id} {...item} />;
             })}
           </div>
