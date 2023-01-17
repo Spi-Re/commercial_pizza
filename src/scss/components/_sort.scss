@@ -4,7 +4,6 @@
   position: relative;
   margin-left: 20px;
   user-select: none;
-  min-width: 160px;
   cursor: default;
   padding-bottom: 16px;
 
@@ -17,6 +16,7 @@
     align-items: center;
     svg {
       margin-right: 8px;
+      cursor: pointer;
     }
 
     b {

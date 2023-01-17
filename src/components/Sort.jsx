@@ -1,8 +1,11 @@
 import React from 'react';
 
-function Sort() {
-  const sortTypes = ['popularity', 'price', 'alphabetically'];
-  const [selectedType, setSelecntedType] = React.useState(0);
+function Sort({ currentSortType, onChangeSortType, onChangeSortOrder }) {
+  const sortTypes = [
+    { name: 'popularity', type: 'rating' },
+    { name: 'price', type: 'price' },
+    { name: 'alphabetically', type: 'title' },
+  ];
   const [isVisible, setIsVisible] = React.useState(false);
 
   return (
@@ -13,6 +16,7 @@ function Sort() {
       }}>
       <div className="sort__label">
         <svg
+          onClick={() => onChangeSortOrder()}
           width="10"
           height="6"
           viewBox="0 0 10 6"
@@ -24,18 +28,20 @@ function Sort() {
           />
         </svg>
         <b>Sort by:</b>
-        <span className="for-selection">{sortTypes[selectedType]}</span>
+        <span className="for-selection">{currentSortType}</span>
       </div>
       {isVisible && (
         <div className="sort__popup">
           <ul>
-            {sortTypes.map((type, index) => {
+            {sortTypes.map((sortType, index) => {
               return (
                 <li
                   key={index}
-                  onPointerUp={() => setSelecntedType(index)}
-                  className={selectedType === index ? `active for-selection` : `for-selection`}>
-                  {type}
+                  onPointerUp={() => onChangeSortType(sortType)}
+                  className={
+                    currentSortType === sortType.name ? `active for-selection` : `for-selection`
+                  }>
+                  {sortType.name}
                 </li>
               );
             })}
