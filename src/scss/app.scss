@@ -29,9 +29,12 @@ body {
   }
 
   &__title {
+    font-size: 42px;
+    font-weight: bold;
     margin: 35px 0;
     @media (max-width: 960px) {
       margin: 10px 0 35px 0;
+      font-size: 35px;
     }
   }
 
@@ -135,6 +138,10 @@ body {
     }
   }
 
+  & .content__items {
+    display: block;
+  }
+
   &__item {
     display: flex;
     width: 100%;
@@ -149,7 +156,7 @@ body {
       width: 10%;
 
       img {
-        width: 80px;
+        width: 90px;
         height: 80px;
       }
     }

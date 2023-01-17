@@ -16,10 +16,11 @@ function Main() {
         setItems(res);
         setIsLoading(false);
       });
+    document.documentElement.scrollTop = 0;
   }, []);
 
   return (
-    <>
+    <div className="container">
       <div className="content__top">
         <Categories />
         <Sort />
@@ -30,7 +31,7 @@ function Main() {
           return isLoading ? <Skeleton key={index} /> : <PizzaBlock key={item.id} {...item} />;
         })}
       </div>
-    </>
+    </div>
   );
 }
 
