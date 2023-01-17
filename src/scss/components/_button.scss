@@ -5,7 +5,7 @@
   background-color: $orange;
   border-radius: 30px;
   padding: 10px 20px;
-  min-width: 100px;
+  min-width: 115px;
   text-align: center;
   cursor: pointer;
   transition: background-color $duration ease-in-out, border-color $duration ease-in-out;
@@ -93,6 +93,10 @@
     background-color: rgba(255, 255, 255, 0.25);
     margin-left: 14px;
     margin-right: 14px;
+
+    @media (max-width: 530px) {
+      margin: 0 5px;
+    }
   }
 
   &--add {
@@ -134,6 +138,10 @@
     align-items: center;
     line-height: 23px;
     padding: 12px 25px;
+
+    @media (max-width: 530px) {
+      padding: 12px 10px;
+    }
 
     svg {
       margin-right: 8px;

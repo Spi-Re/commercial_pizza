@@ -1,25 +1,34 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from 'react-router-dom';
 import './scss/app.scss';
 
-import Header from './components/Header';
+// импорт страниц
 import Main from './pages/Main';
 import NotFound from './pages/NotFound';
+import Cart from './pages/Cart';
 
+// обёртка над всеми роутерами
+import RootLayout from './layouts/RootLayout';
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<RootLayout />}>
+      <Route index element={<Main />} />
+      <Route path="cart" element={<Cart />} />
+      <Route path="*" element={<NotFound />} />
+    </Route>,
+  ),
+);
+
+// Финальное отображение router
 function App() {
-  return (
-    <div className="wrapper">
-      <Header />
-      <div className="content">
-        <div className="container">
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-      </div>
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

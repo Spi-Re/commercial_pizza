@@ -1,13 +1,20 @@
 @import '../variables';
 
 .sort {
-  user-select: none;
-  cursor: default;
   position: relative;
+  margin-left: 20px;
+  user-select: none;
+  min-width: 160px;
+  cursor: default;
+  padding-bottom: 16px;
+
+  @media (max-width: 960px) {
+    margin-left: 0;
+  }
+
   &__label {
     display: flex;
     align-items: center;
-
     svg {
       margin-right: 8px;
     }

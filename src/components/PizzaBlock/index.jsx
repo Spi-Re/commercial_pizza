@@ -1,7 +1,7 @@
 import React from 'react';
 
 function PizzaBlock({ imageUrl, title, price, sizes, types }) {
-  const pizzasTypes = ['thin dough', 'traditional dough'];
+  const pizzasTypes = ['thin', 'traditional'];
   const [doughType, setDoughType] = React.useState(0);
   const [pizzaSize, setPizzaSize] = React.useState(0);
 

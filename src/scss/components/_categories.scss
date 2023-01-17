@@ -1,6 +1,12 @@
 @import '../variables';
 
 .categories {
+  width: 100%;
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+
   ul {
     display: flex;
 
