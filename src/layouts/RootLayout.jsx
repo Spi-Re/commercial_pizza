@@ -3,17 +3,21 @@ import { Outlet } from 'react-router-dom';
 
 import Header from '../components/Header';
 
+export const SearchContext = React.createContext();
+
 function RootLayout() {
   const [searchValue, setSearchValue] = React.useState('');
 
   return (
     <>
-      <div className="wrapper">
-        <Header searchValue={searchValue} setSearchValue={setSearchValue} />
-        <div className="content">
-          <Outlet context={searchValue} />
+      <SearchContext.Provider value={[searchValue, setSearchValue]}>
+        <div className="wrapper">
+          <Header />
+          <div className="content">
+            <Outlet />
+          </div>
         </div>
-      </div>
+      </SearchContext.Provider>
     </>
   );
 }

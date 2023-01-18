@@ -1,7 +1,11 @@
 import React from 'react';
+import { SearchContext } from '../../layouts/RootLayout';
+
 import styles from './SearchBar.module.scss';
 
-function SearchBar({ searchValue, setSearchValue }) {
+function SearchBar() {
+  const [searchValue, setSearchValue] = React.useContext(SearchContext);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -25,7 +29,6 @@ function SearchBar({ searchValue, setSearchValue }) {
             strokeLinejoin="round"
           />
         </svg>
-
         <svg
           onClick={() => setSearchValue('')}
           className={styles.closeIcon}

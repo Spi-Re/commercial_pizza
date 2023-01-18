@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import SearchBar from './SearchBar';
 
-function Header({ searchValue, setSearchValue }) {
+function Header() {
   return (
     <div className="header">
       <div className="container">
@@ -53,7 +53,7 @@ function Header({ searchValue, setSearchValue }) {
           </Link>
         </div>
       </div>
-      <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
+      <SearchBar />
     </div>
   );
 }

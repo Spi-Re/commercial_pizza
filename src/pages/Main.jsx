@@ -6,6 +6,7 @@ import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
+import { SearchContext } from '../layouts/RootLayout';
 
 const BACKEND_URL = 'https://63c56aabf3a73b347855bbb1.mockapi.io';
 
@@ -14,13 +15,13 @@ function Main() {
     1: 'asc',
     '-1': 'desc',
   };
+
   const [pizzas, setPizzas] = React.useState([...new Array(8)]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [category, setCategory] = React.useState(0);
   const [sortType, setSortType] = React.useState({ name: 'popularity', type: 'rating' });
   const [sortOrder, setSortOrder] = React.useState(1);
-
-  const searchValue = useOutletContext();
+  const [searchValue] = React.useContext(SearchContext);
 
   const categoryToBackend = category ? `category=${category}` : '';
   const search = searchValue ? `&search=${searchValue.toLowerCase()}` : '';
@@ -50,16 +51,9 @@ function Main() {
       </div>
       <h2 className="content__title">All Pizzas</h2>
       <div className="content__items">
-        {pizzas
-          // .filter((item) => {
-          //   if (item.title.toLowerCase().includes(searchValue.toLowerCase())) {
-          //     return true;
-          //   }
-          //   return false;
-          // })
-          .map((item, index) => {
-            return isLoading ? <Skeleton key={index} /> : <PizzaBlock key={item.id} {...item} />;
-          })}
+        {pizzas.map((item, index) => {
+          return isLoading ? <Skeleton key={index} /> : <PizzaBlock key={item.id} {...item} />;
+        })}
       </div>
     </div>
   );
