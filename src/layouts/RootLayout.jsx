@@ -3,17 +3,19 @@ import { Outlet } from 'react-router-dom';
 
 import Header from '../components/Header';
 
-function LayOutApp() {
+function RootLayout() {
+  const [searchValue, setSearchValue] = React.useState('');
+
   return (
     <>
       <div className="wrapper">
-        <Header />
+        <Header searchValue={searchValue} setSearchValue={setSearchValue} />
         <div className="content">
-          <Outlet />
+          <Outlet context={searchValue} />
         </div>
       </div>
     </>
   );
 }
 
-export default LayOutApp;
+export default RootLayout;

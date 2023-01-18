@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useOutletContext } from 'react-router-dom';
+
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
@@ -18,12 +20,15 @@ function Main() {
   const [sortType, setSortType] = React.useState({ name: 'popularity', type: 'rating' });
   const [sortOrder, setSortOrder] = React.useState(1);
 
+  const searchValue = useOutletContext();
+
   const categoryToBackend = category ? `category=${category}` : '';
+  const search = searchValue ? `&search=${searchValue.toLowerCase()}` : '';
 
   React.useEffect(() => {
     setIsLoading(true);
     fetch(
-      `${BACKEND_URL}/pizzas?${categoryToBackend}&sortBy=${sortType.type}&order=${order[sortOrder]}`,
+      `${BACKEND_URL}/pizzas?${categoryToBackend}&sortBy=${sortType.type}&order=${order[sortOrder]}${search}`,
     )
       .then((res) => res.json())
       .then((res) => {
@@ -31,7 +36,7 @@ function Main() {
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, [category, sortType, sortOrder]);
+  }, [category, sortType, sortOrder, searchValue]);
 
   return (
     <div className="container">
@@ -45,9 +50,16 @@ function Main() {
       </div>
       <h2 className="content__title">All Pizzas</h2>
       <div className="content__items">
-        {pizzas.map((item, index) => {
-          return isLoading ? <Skeleton key={index} /> : <PizzaBlock key={item.id} {...item} />;
-        })}
+        {pizzas
+          // .filter((item) => {
+          //   if (item.title.toLowerCase().includes(searchValue.toLowerCase())) {
+          //     return true;
+          //   }
+          //   return false;
+          // })
+          .map((item, index) => {
+            return isLoading ? <Skeleton key={index} /> : <PizzaBlock key={item.id} {...item} />;
+          })}
       </div>
     </div>
   );

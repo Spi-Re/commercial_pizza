@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import SearchBar from './SearchBar';
 
-function Header() {
+function Header({ searchValue, setSearchValue }) {
   return (
     <div className="header">
       <div className="container">
@@ -12,14 +12,14 @@ function Header() {
             <img width="38" src={LogoSVG} alt="Pizza logo" />
             <div>
               <h1>React Pizza</h1>
-              <p>самая вкусная пицца во вселенной</p>
+              <p>The best pizza in the world!!!11</p>
             </div>
           </div>
         </Link>
 
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
-            <span>520 ₽</span>
+            <span>$520</span>
             <div className="button__delimiter"></div>
             <svg
               width="18"
@@ -53,7 +53,7 @@ function Header() {
           </Link>
         </div>
       </div>
-      <SearchBar />
+      <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
     </div>
   );
 }
