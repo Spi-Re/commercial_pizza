@@ -12,19 +12,18 @@ function Main() {
     1: 'asc',
     '-1': 'desc',
   };
-
-  const [items, setPizzas] = React.useState([...new Array(8)]);
+  const [pizzas, setPizzas] = React.useState([...new Array(8)]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [selectedCategory, setCategory] = React.useState(0);
-  const [selectedType, setSortType] = React.useState({ name: 'popularity', type: 'rating' });
+  const [category, setCategory] = React.useState(0);
+  const [sortType, setSortType] = React.useState({ name: 'popularity', type: 'rating' });
   const [sortOrder, setSortOrder] = React.useState(1);
 
-  const category = selectedCategory ? `category=${selectedCategory}` : '';
+  const categoryToBackend = category ? `category=${category}` : '';
 
   React.useEffect(() => {
     setIsLoading(true);
     fetch(
-      `https://63c56aabf3a73b347855bbb1.mockapi.io/pizzas?${category}&sortBy=${selectedType.type}&order=${order[sortOrder]}`,
+      `${BACKEND_URL}/pizzas?${categoryToBackend}&sortBy=${sortType.type}&order=${order[sortOrder]}`,
     )
       .then((res) => res.json())
       .then((res) => {
@@ -32,24 +31,21 @@ function Main() {
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, [selectedCategory, selectedType, sortOrder]);
+  }, [category, sortType, sortOrder]);
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories
-          currentCategory={selectedCategory}
-          onChangeCategory={(value) => setCategory(value)}
-        />
+        <Categories currentCategory={category} onChangeCategory={(value) => setCategory(value)} />
         <Sort
-          currentSortType={selectedType.name}
+          currentSortType={sortType.name}
           onChangeSortType={(sortType) => setSortType(sortType)}
           onChangeSortOrder={() => setSortOrder(-sortOrder)}
         />
       </div>
       <h2 className="content__title">All Pizzas</h2>
       <div className="content__items">
-        {items.map((item, index) => {
+        {pizzas.map((item, index) => {
           return isLoading ? <Skeleton key={index} /> : <PizzaBlock key={item.id} {...item} />;
         })}
       </div>
