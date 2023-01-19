@@ -4,19 +4,21 @@ import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
-import { SearchContext } from '../layouts/RootLayout';
 import Pagination from '../components/Pagination';
+
+import { useSelector } from 'react-redux';
 
 const BACKEND_URL = 'https://63c56aabf3a73b347855bbb1.mockapi.io';
 
 const Main = () => {
+  const searchValue = useSelector((state) => state.search.value);
+
   const order = {
     1: 'asc',
     '-1': 'desc',
   };
 
   const [isLoading, setIsLoading] = React.useState(true);
-  const [searchValue] = React.useContext(SearchContext);
   const [pizzas, setPizzas] = React.useState([...new Array(4)]);
 
   const [category, setCategory] = React.useState(0);

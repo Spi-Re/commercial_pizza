@@ -5,8 +5,8 @@ import SearchBar from './SearchBar';
 
 function Header() {
   const { pathname } = useLocation();
+  const indexPage = pathname === '/';
 
-  const indexLocation = pathname === '/';
   return (
     <div className="header">
       <div className="container">
@@ -56,7 +56,7 @@ function Header() {
           </Link>
         </div>
       </div>
-      {indexLocation && <SearchBar />}
+      {indexPage && <SearchBar />}
     </div>
   );
 }

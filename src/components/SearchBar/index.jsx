@@ -1,17 +1,20 @@
 import React from 'react';
-import { SearchContext } from '../../layouts/RootLayout';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { onChangeSearchValue } from '../../redux/slices/searchSlice';
 
 import styles from './SearchBar.module.scss';
 
 function SearchBar() {
-  const [searchValue, setSearchValue] = React.useContext(SearchContext);
+  const searchValue = useSelector((state) => state.search.value);
+  const dispatch = useDispatch();
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <input
           value={searchValue}
-          onChange={(event) => setSearchValue(event.target.value)}
+          onChange={(event) => dispatch(onChangeSearchValue(event.target.value))}
           className={styles.input}
           placeholder="Search..."
         />
@@ -30,7 +33,7 @@ function SearchBar() {
           />
         </svg>
         <svg
-          onClick={() => setSearchValue('')}
+          onClick={() => dispatch(onChangeSearchValue(''))}
           className={styles.closeIcon}
           xmlns="http://www.w3.org/2000/svg"
           width="28px"
