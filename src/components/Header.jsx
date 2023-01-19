@@ -1,9 +1,12 @@
 import LogoSVG from '../assets/img/pizza-logo.svg';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import SearchBar from './SearchBar';
 
 function Header() {
+  const { pathname } = useLocation();
+
+  const indexLocation = pathname === '/';
   return (
     <div className="header">
       <div className="container">
@@ -53,7 +56,7 @@ function Header() {
           </Link>
         </div>
       </div>
-      <SearchBar />
+      {indexLocation && <SearchBar />}
     </div>
   );
 }

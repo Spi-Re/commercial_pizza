@@ -25,8 +25,6 @@ const Main = () => {
 
   const [currentPage, setCurrentPage] = React.useState(1);
 
-  console.log(currentPage);
-
   const categoryToBackend = category ? `category=${category}` : '';
   const searchPizzas = searchValue ? `&search=${searchValue.toLowerCase()}` : '';
 
