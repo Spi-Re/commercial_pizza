@@ -4,12 +4,12 @@ const initialState = {
   value: '',
 };
 
-export const searchSlice = createSlice({
+const searchSlice = createSlice({
   name: 'search',
   initialState,
   reducers: {
-    onChangeSearchValue: (state, value) => {
-      state.value = value.payload;
+    onChangeSearchValue(state, { payload }) {
+      state.value = payload;
     },
   },
 });

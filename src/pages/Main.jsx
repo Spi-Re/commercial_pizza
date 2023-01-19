@@ -10,30 +10,26 @@ import { useSelector } from 'react-redux';
 
 const BACKEND_URL = 'https://63c56aabf3a73b347855bbb1.mockapi.io';
 
+const ORDER = {
+  1: 'asc',
+  '-1': 'desc',
+};
+
 const Main = () => {
-  const searchValue = useSelector((state) => state.search.value);
-
-  const order = {
-    1: 'asc',
-    '-1': 'desc',
-  };
-
   const [isLoading, setIsLoading] = React.useState(true);
   const [pizzas, setPizzas] = React.useState([...new Array(4)]);
 
-  const [category, setCategory] = React.useState(0);
-  const [sortType, setSortType] = React.useState({ name: 'popularity', type: 'rating' });
-  const [sortOrder, setSortOrder] = React.useState(1);
+  const searchValue = useSelector((state) => state.search.value);
+  const { categoryIndex, sortType, sortOrder } = useSelector((state) => state.filter);
+  const currentPage = useSelector((state) => state.pagination.currentPage);
 
-  const [currentPage, setCurrentPage] = React.useState(1);
-
-  const categoryToBackend = category ? `category=${category}` : '';
+  const categoryToBackend = categoryIndex ? `category=${categoryIndex}` : '';
   const searchPizzas = searchValue ? `&search=${searchValue.toLowerCase()}` : '';
 
   React.useEffect(() => {
     setIsLoading(true);
     fetch(
-      `${BACKEND_URL}/pizzas?${categoryToBackend}&sortBy=${sortType.type}&order=${order[sortOrder]}${searchPizzas}&p=${currentPage}&l=4`,
+      `${BACKEND_URL}/pizzas?${categoryToBackend}&sortBy=${sortType.type}&order=${ORDER[sortOrder]}${searchPizzas}&p=${currentPage}&l=4`,
     )
       .then((res) => res.json())
       .then((res) => {
@@ -41,17 +37,13 @@ const Main = () => {
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, [category, sortType, sortOrder, searchValue, currentPage]);
+  }, [categoryIndex, sortType, sortOrder, searchValue, currentPage]);
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories currentCategory={category} onChangeCategory={(value) => setCategory(value)} />
-        <Sort
-          currentSortType={sortType.name}
-          onChangeSortType={(sortType) => setSortType(sortType)}
-          onChangeSortOrder={() => setSortOrder(-sortOrder)}
-        />
+        <Categories />
+        <Sort />
       </div>
       <h2 className="content__title">All Pizzas</h2>
       <div className="content__items">
@@ -59,7 +51,7 @@ const Main = () => {
           return isLoading ? <Skeleton key={index} /> : <PizzaBlock key={item.id} {...item} />;
         })}
       </div>
-      <Pagination amountPages={3} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <Pagination />
     </div>
   );
 };

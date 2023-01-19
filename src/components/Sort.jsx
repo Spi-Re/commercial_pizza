@@ -1,12 +1,20 @@
 import React from 'react';
 
-function Sort({ currentSortType, onChangeSortType, onChangeSortOrder }) {
-  const sortTypes = [
-    { name: 'popularity', type: 'rating' },
-    { name: 'price', type: 'price' },
-    { name: 'alphabetically', type: 'title' },
-  ];
+import { useSelector, useDispatch } from 'react-redux';
+import { setSortType, setSortOrder } from '../redux/slices/filterSlice';
+
+const sortTypes = [
+  { name: 'popularity', type: 'rating' },
+  { name: 'price', type: 'price' },
+  { name: 'alphabetically', type: 'title' },
+];
+
+function Sort() {
+  const dispatch = useDispatch();
   const [isVisible, setIsVisible] = React.useState(false);
+
+  const sortOrder = useSelector((state) => state.filter.sortOrder);
+  const chosenSortTypeName = useSelector((state) => state.filter.sortType.name);
 
   return (
     <div
@@ -16,7 +24,7 @@ function Sort({ currentSortType, onChangeSortType, onChangeSortOrder }) {
       }}>
       <div className="sort__label">
         <svg
-          onClick={() => onChangeSortOrder()}
+          onClick={() => dispatch(setSortOrder(-sortOrder))}
           width="10"
           height="6"
           viewBox="0 0 10 6"
@@ -28,7 +36,7 @@ function Sort({ currentSortType, onChangeSortType, onChangeSortOrder }) {
           />
         </svg>
         <b>Sort by:</b>
-        <span className="for-selection">{currentSortType}</span>
+        <span className="for-selection">{chosenSortTypeName}</span>
       </div>
       {isVisible && (
         <div className="sort__popup">
@@ -37,9 +45,9 @@ function Sort({ currentSortType, onChangeSortType, onChangeSortOrder }) {
               return (
                 <li
                   key={index}
-                  onPointerUp={() => onChangeSortType(sortType)}
+                  onPointerUp={() => dispatch(setSortType(sortType))}
                   className={
-                    currentSortType === sortType.name ? `active for-selection` : `for-selection`
+                    chosenSortTypeName === sortType.name ? `active for-selection` : `for-selection`
                   }>
                   {sortType.name}
                 </li>
