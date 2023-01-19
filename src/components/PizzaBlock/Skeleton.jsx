@@ -6,8 +6,8 @@ const MyLoader = (props) => (
     className="pizza-block"
     speed={2}
     width={280}
-    height={465}
-    viewBox="0 0 280 465"
+    height={457}
+    viewBox="0 0 280 467"
     backgroundColor="#f3f3f3"
     foregroundColor="#ecebeb"
     {...props}>

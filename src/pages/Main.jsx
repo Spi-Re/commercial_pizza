@@ -1,35 +1,39 @@
 import React from 'react';
 
-import { useOutletContext } from 'react-router-dom';
-
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import { SearchContext } from '../layouts/RootLayout';
+import Pagination from '../components/Pagination';
 
 const BACKEND_URL = 'https://63c56aabf3a73b347855bbb1.mockapi.io';
 
-function Main() {
+const Main = () => {
   const order = {
     1: 'asc',
     '-1': 'desc',
   };
 
-  const [pizzas, setPizzas] = React.useState([...new Array(8)]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [searchValue] = React.useContext(SearchContext);
+  const [pizzas, setPizzas] = React.useState([...new Array(4)]);
+
   const [category, setCategory] = React.useState(0);
   const [sortType, setSortType] = React.useState({ name: 'popularity', type: 'rating' });
   const [sortOrder, setSortOrder] = React.useState(1);
-  const [searchValue] = React.useContext(SearchContext);
+
+  const [currentPage, setCurrentPage] = React.useState(1);
+
+  console.log(currentPage);
 
   const categoryToBackend = category ? `category=${category}` : '';
-  const search = searchValue ? `&search=${searchValue.toLowerCase()}` : '';
+  const searchPizzas = searchValue ? `&search=${searchValue.toLowerCase()}` : '';
 
   React.useEffect(() => {
     setIsLoading(true);
     fetch(
-      `${BACKEND_URL}/pizzas?${categoryToBackend}&sortBy=${sortType.type}&order=${order[sortOrder]}${search}`,
+      `${BACKEND_URL}/pizzas?${categoryToBackend}&sortBy=${sortType.type}&order=${order[sortOrder]}${searchPizzas}&p=${currentPage}&l=4`,
     )
       .then((res) => res.json())
       .then((res) => {
@@ -37,7 +41,7 @@ function Main() {
         setIsLoading(false);
       });
     window.scrollTo(0, 0);
-  }, [category, sortType, sortOrder, searchValue]);
+  }, [category, sortType, sortOrder, searchValue, currentPage]);
 
   return (
     <div className="container">
@@ -55,8 +59,9 @@ function Main() {
           return isLoading ? <Skeleton key={index} /> : <PizzaBlock key={item.id} {...item} />;
         })}
       </div>
+      <Pagination amountPages={3} currentPage={currentPage} setCurrentPage={setCurrentPage} />
     </div>
   );
-}
+};
 
 export default Main;

@@ -11,7 +11,7 @@ body {
   width: calc(100vw - 100px);
   height: 100%;
   background-color: #fff;
-  margin: 25px auto 0;
+  margin: 0 auto;
   border-radius: 10px;
   max-width: 1400px;
 
@@ -22,7 +22,7 @@ body {
 }
 
 .content {
-  padding: 25px 0 40px 0;
+  padding: 25px 0 25px 0;
 
   @media (max-width: 950px) {
     padding: 20px 0;
@@ -39,10 +39,12 @@ body {
   }
 
   &__items {
+    min-height: $pizza-block-width;
     text-align: center;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    // Edit to increase rows.
+    grid-template-rows: repeat(1, 1fr);
     grid-column-gap: 10px;
     @media (max-width: 1220px) {
       grid-template-columns: repeat(3, 1fr);
