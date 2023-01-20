@@ -6,7 +6,7 @@ import { setCategory } from '../redux/slices/filterSlice';
 const pizzasCategories = ['All', 'Meat', 'Vegetarian', 'Grill', 'Spicy', 'Closed'];
 
 const Categories = () => {
-  const currentCategoryIndex = useSelector((state) => state.filter.categoryIndex);
+  const currentCategoryIndex = useSelector((state) => state.filter.categoryIndexState);
   const dispatch = useDispatch();
 
   return (

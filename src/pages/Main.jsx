@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import axios from 'axios';
+import qs from 'qs';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
+import { sortTypes } from '../components/Sort';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCategory, setSortType, setSortOrder } from '../redux/slices/filterSlice';
 
 const BACKEND_URL = 'https://63c56aabf3a73b347855bbb1.mockapi.io';
 
@@ -17,31 +20,69 @@ const _ORDER = {
 };
 
 const Main = () => {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = React.useState(true);
   const [pizzas, setPizzas] = React.useState([...new Array(4)]);
 
-  const { categoryIndex, sortType, sortOrder } = useSelector((state) => state.filter);
+  const { categoryIndexState, sortType, sortOrder } = useSelector((state) => state.filter);
   const searchValue = useSelector((state) => state.search.value);
   const currentPage = useSelector((state) => state.pagination.currentPage);
 
-  const categoryToBackend = categoryIndex ? `category=${categoryIndex}` : '';
-  const searchPizzas = searchValue ? `&search=${searchValue.toLowerCase()}` : '';
+  // FIXME: Нужно нажать 2 раза для перехода. Почему?
+  const onHistoryChange = React.useCallback((event) => {
+    const queryString = qs.parse(event.state.page);
+    getQuerySearchMove(queryString);
+  });
 
-  React.useEffect(() => {
+  const getPizzas = () => {
     setIsLoading(true);
+    const categoryIndex = categoryIndexState ? `category=${categoryIndexState}` : '';
+    const searchPizzas = searchValue ? `&search=${searchValue.toLowerCase()}` : '';
 
     axios
       .get(
-        `${BACKEND_URL}/pizzas?${categoryToBackend}&sortBy=${sortType.type}&order=${_ORDER[sortOrder]}${searchPizzas}&p=${currentPage}&l=4`,
+        `${BACKEND_URL}/pizzas?${categoryIndex}&sortBy=${sortType.type}&order=${_ORDER[sortOrder]}${searchPizzas}&p=${currentPage}&l=4`,
       )
       .then((res) => {
-        console.log(res);
         setPizzas(res.data);
         setIsLoading(false);
       });
 
     window.scrollTo(0, 0);
-  }, [categoryIndex, sortType, sortOrder, searchValue, currentPage]);
+  };
+
+  const getQuerySearchMove = (queryString) => {
+    const { sortType, sortOrder, categoryIndexState } = qs.parse(queryString);
+    const sortObj = sortTypes.find((item) => item.type === sortType);
+
+    dispatch(setCategory(parseInt(categoryIndexState)));
+    dispatch(setSortOrder(parseInt(sortOrder)));
+    dispatch(setSortType(sortObj));
+  };
+
+  // полчение данных из queryString при перво  загрузке страницы
+  React.useEffect(() => {
+    window.onpopstate = (event) => onHistoryChange(event);
+
+    const queryString = window.location.search.slice(1);
+    getQuerySearchMove(queryString);
+  }, []);
+
+  // получение данных о паиццах с сервера
+  React.useEffect(() => {
+    getPizzas();
+  }, [categoryIndexState, sortType, sortOrder, searchValue, currentPage]);
+
+  // запись данных в queryString
+  React.useEffect(() => {
+    const queryString = qs.stringify({
+      categoryIndexState,
+      sortType: sortType.type,
+      sortOrder,
+    });
+
+    window.history.pushState({ page: queryString }, '', `?${queryString}`);
+  }, [categoryIndexState, sortType, sortOrder, currentPage]);
 
   return (
     <div className="container">
