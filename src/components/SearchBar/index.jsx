@@ -1,22 +1,45 @@
 import React from 'react';
+import debounce from 'lodash.debounce';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { onChangeSearchValue } from '../../redux/slices/searchSlice';
 
 import styles from './SearchBar.module.scss';
 
 function SearchBar() {
-  const searchValue = useSelector((state) => state.search.value);
   const dispatch = useDispatch();
+  const [inputValue, setInputValue] = React.useState('');
+
+  const inputRef = React.useRef();
+
+  const onClearInput = () => {
+    dispatch(onChangeSearchValue(''));
+    setInputValue('');
+    inputRef.current.focus();
+  };
+
+  const onChangeInput = (event) => {
+    const value = event.target.value;
+    onDebouneChangeSearchValue(value);
+    setInputValue(value);
+  };
+
+  const onDebouneChangeSearchValue = React.useCallback(
+    debounce((value) => {
+      dispatch(onChangeSearchValue(value));
+    }, 300),
+    [],
+  );
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <input
-          value={searchValue}
-          onChange={(event) => dispatch(onChangeSearchValue(event.target.value))}
+          ref={inputRef}
+          value={inputValue}
+          onChange={(event) => onChangeInput(event)}
           className={styles.input}
-          placeholder="Search..."
+          placeholder="Search pizzas..."
         />
         <svg
           className={styles.searchIcon}
@@ -32,24 +55,26 @@ function SearchBar() {
             strokeLinejoin="round"
           />
         </svg>
-        <svg
-          onClick={() => dispatch(onChangeSearchValue(''))}
-          className={styles.closeIcon}
-          xmlns="http://www.w3.org/2000/svg"
-          width="28px"
-          height="28px"
-          viewBox="0 0 24 24"
-          fill="none">
-          <g clipPath="url(#clip0_429_11083)">
-            <path
-              d="M7 7.00006L17 17.0001M7 17.0001L17 7.00006"
-              stroke="#292929"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </g>
-        </svg>
+        {inputValue && (
+          <svg
+            onClick={onClearInput}
+            className={styles.closeIcon}
+            xmlns="http://www.w3.org/2000/svg"
+            width="28px"
+            height="28px"
+            viewBox="0 0 24 24"
+            fill="none">
+            <g clipPath="url(#clip0_429_11083)">
+              <path
+                d="M7 7.00006L17 17.0001M7 17.0001L17 7.00006"
+                stroke="#292929"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </g>
+          </svg>
+        )}
       </div>
     </div>
   );
