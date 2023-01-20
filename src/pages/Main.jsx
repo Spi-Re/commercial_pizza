@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import axios from 'axios';
 import qs from 'qs';
 
@@ -19,21 +19,15 @@ const _ORDER = {
   '-1': 'desc',
 };
 
+// FIXME: При использовании history.back() полсе прихода с страницы Cart, теряется redux
 const Main = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = React.useState(true);
   const [pizzas, setPizzas] = React.useState([...new Array(4)]);
-
   const { categoryIndexState, sortType, sortOrder } = useSelector((state) => state.filter);
   const searchValue = useSelector((state) => state.search.value);
   const currentPage = useSelector((state) => state.pagination.currentPage);
-
-  // FIXME: Нужно нажать 2 раза для перехода. Почему?
-  const onHistoryChange = React.useCallback((event) => {
-    const queryString = qs.parse(event.state.page);
-    getQuerySearchMove(queryString);
-  });
-
+  const onHistoryMove = React.useRef(false);
   const getPizzas = () => {
     setIsLoading(true);
     const categoryIndex = categoryIndexState ? `category=${categoryIndexState}` : '';
@@ -51,7 +45,14 @@ const Main = () => {
     window.scrollTo(0, 0);
   };
 
-  const getQuerySearchMove = (queryString) => {
+  // перемещение по history сессии c помощью кнопок
+  const onHistoryChange = React.useCallback((event) => {
+    onHistoryMove.current = true;
+    writeQueryStringToState(event.state.page);
+  });
+
+  // Запись query string в state
+  const writeQueryStringToState = (queryString) => {
     const { sortType, sortOrder, categoryIndexState } = qs.parse(queryString);
     const sortObj = sortTypes.find((item) => item.type === sortType);
 
@@ -60,20 +61,24 @@ const Main = () => {
     dispatch(setSortType(sortObj));
   };
 
-  // полчение данных из queryString при перво  загрузке страницы
+  // полчение данных из queryString при первой  загрузке страницы
   React.useEffect(() => {
-    window.onpopstate = (event) => onHistoryChange(event);
-
-    const queryString = window.location.search.slice(1);
-    getQuerySearchMove(queryString);
+    window.addEventListener('popstate', onHistoryChange);
+    if (window.location.search) {
+      const queryString = window.location.search.slice(1);
+      writeQueryStringToState(queryString);
+    }
+    return () => {
+      window.removeEventListener('popstate', onHistoryChange);
+    };
   }, []);
 
-  // получение данных о паиццах с сервера
+  // получение пицц при изменении фильтров
   React.useEffect(() => {
     getPizzas();
   }, [categoryIndexState, sortType, sortOrder, searchValue, currentPage]);
 
-  // запись данных в queryString
+  // запись в queryString при изменении фильтров
   React.useEffect(() => {
     const queryString = qs.stringify({
       categoryIndexState,
@@ -81,7 +86,10 @@ const Main = () => {
       sortOrder,
     });
 
-    window.history.pushState({ page: queryString }, '', `?${queryString}`);
+    !onHistoryMove.current &&
+      window.history.pushState({ page: queryString }, '', `?${queryString}`);
+
+    onHistoryMove.current = false;
   }, [categoryIndexState, sortType, sortOrder, currentPage]);
 
   return (
