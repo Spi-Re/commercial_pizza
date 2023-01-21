@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { onPlusPizza } from '../../redux/slices/cartSlice';
-const doughTypes = ['thin', 'traditional'];
+const doughTypes = ['thin crust', 'traditional'];
 
 function PizzaBlock({ id, imageUrl, title, price, sizes, types }) {
   const dispatch = useDispatch();

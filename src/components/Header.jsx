@@ -9,7 +9,7 @@ function Header() {
   const { pathname } = useLocation();
   const indexPage = pathname === '/';
 
-  const { amountPizzas, amountMoney } = useSelector((state) => state.cart);
+  const { totalPizzas, orderPrice } = useSelector((state) => state.cart);
 
   return (
     <div className="header">
@@ -26,7 +26,7 @@ function Header() {
 
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
-            <span>${amountMoney}</span>
+            <span>${orderPrice}</span>
             <div className="button__delimiter"></div>
             <svg
               width="18"
@@ -56,7 +56,7 @@ function Header() {
                 strokeLinejoin="round"
               />
             </svg>
-            <span>{amountPizzas}</span>
+            <span>{totalPizzas}</span>
           </Link>
         </div>
       </div>
