@@ -19,7 +19,6 @@ const _ORDER = {
   '-1': 'desc',
 };
 
-// FIXME: При использовании history.back() полсе прихода с страницы Cart, теряется redux
 const Main = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = React.useState(true);
@@ -28,6 +27,7 @@ const Main = () => {
   const searchValue = useSelector((state) => state.search.value);
   const currentPage = useSelector((state) => state.pagination.currentPage);
   const onHistoryMove = React.useRef(false);
+
   const getPizzas = () => {
     setIsLoading(true);
     const categoryIndex = categoryIndexState ? `category=${categoryIndexState}` : '';
@@ -53,12 +53,14 @@ const Main = () => {
 
   // Запись query string в state
   const writeQueryStringToState = (queryString) => {
-    const { sortType, sortOrder, categoryIndexState } = qs.parse(queryString);
-    const sortObj = sortTypes.find((item) => item.type === sortType);
+    if (queryString) {
+      const { sortType, sortOrder, categoryIndexState } = qs.parse(queryString);
+      const sortObj = sortTypes.find((item) => item.type === sortType);
 
-    dispatch(setCategory(parseInt(categoryIndexState)));
-    dispatch(setSortOrder(parseInt(sortOrder)));
-    dispatch(setSortType(sortObj));
+      dispatch(setCategory(parseInt(categoryIndexState)));
+      dispatch(setSortOrder(parseInt(sortOrder)));
+      dispatch(setSortType(sortObj));
+    }
   };
 
   // полчение данных из queryString при первой  загрузке страницы
