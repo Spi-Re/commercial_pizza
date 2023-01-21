@@ -22,7 +22,7 @@ const cartSlice = createSlice({
       const pizzaInCart = state.pizzas.find((pizza) => payload.personal_id === pizza.personal_id);
       pizzaInCart.count--;
 
-      if (pizzaInCart.count) {
+      if (!pizzaInCart.count) {
         const index = state.pizzas.indexOf(pizzaInCart);
         state.pizzas.splice(index, 1);
       }

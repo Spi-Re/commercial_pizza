@@ -1,11 +1,16 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-
+import { onClearCart } from '../redux/slices/cartSlice';
 import PizzaBlockCart from '../components/PizzaBlockCart';
 
 function Cart() {
+  const dispatch = useDispatch();
   const { totalPizzas, orderPrice, pizzas } = useSelector((state) => state.cart);
+
+  const handlerClearCart = () => {
+    dispatch(onClearCart());
+  };
 
   return (
     <div className="container container--cart">
@@ -42,7 +47,7 @@ function Cart() {
             </svg>
             Cart
           </h2>
-          <button className="cart__clear">
+          <button onClick={() => handlerClearCart()} className="cart__clear">
             <svg
               width="20"
               height="20"

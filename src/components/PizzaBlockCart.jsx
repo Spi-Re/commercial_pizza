@@ -1,13 +1,20 @@
 import React from 'react';
 
 import { useDispatch } from 'react-redux';
-import { onDeletePizza } from '../redux/slices/cartSlice';
+import { onDeletePizza, onMinusPizza, onPlusPizza } from '../redux/slices/cartSlice';
 
 function PizzaBlockCart({ personal_id, title, imageUrl, doughType, size, count, price }) {
   const dispatch = useDispatch();
 
-  const onClearItem = (id) => {
-    dispatch(onDeletePizza(id));
+  const handleDeleteItem = () => {
+    dispatch(onDeletePizza(personal_id));
+  };
+
+  const handleMinusPizza = () => {
+    dispatch(onMinusPizza({ personal_id, price }));
+  };
+  const handlePlusPizza = () => {
+    dispatch(onPlusPizza({ personal_id, price }));
   };
   return (
     <div className="cart__item">
@@ -19,7 +26,9 @@ function PizzaBlockCart({ personal_id, title, imageUrl, doughType, size, count, 
         <p>{`${doughType}, ${size}`} cm.</p>
       </div>
       <div className="cart__item-count">
-        <div className="button button--outline button--circle cart__item-count-minus">
+        <div
+          onClick={() => handleMinusPizza()}
+          className="button button--outline button--circle cart__item-count-minus">
           <svg
             width="10"
             height="10"
@@ -37,7 +46,9 @@ function PizzaBlockCart({ personal_id, title, imageUrl, doughType, size, count, 
           </svg>
         </div>
         <b>{count}</b>
-        <div className="button button--outline button--circle cart__item-count-plus">
+        <div
+          onClick={() => handlePlusPizza()}
+          className="button button--outline button--circle cart__item-count-plus">
           <svg
             width="10"
             height="10"
@@ -61,7 +72,7 @@ function PizzaBlockCart({ personal_id, title, imageUrl, doughType, size, count, 
       <div className="cart__item-remove">
         <button
           onClick={() => {
-            onClearItem(personal_id);
+            handleDeleteItem();
           }}
           className="button button--outline button--circle">
           <svg
