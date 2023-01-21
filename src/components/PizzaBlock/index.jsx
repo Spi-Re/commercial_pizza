@@ -46,7 +46,7 @@ function PizzaBlock({ id, imageUrl, title, price, sizes, types }) {
                 key={(size, index)}
                 onClick={() => setPizzaSize(index)}
                 className={index === pizzaSize ? 'active' : ''}>
-                {size} см.
+                {size} cm
               </li>
             );
           })}
