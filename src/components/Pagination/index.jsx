@@ -9,7 +9,7 @@ import styles from './Pagination.module.scss';
 function Pagination() {
   const dispatch = useDispatch();
 
-  const amountPages = useSelector((state) => state.pagination.pagesAmount);
+  const { pagesAmount, currentPage } = useSelector((state) => state.pagination);
 
   return (
     <ReactPaginate
@@ -18,7 +18,8 @@ function Pagination() {
       nextLabel=">"
       onPageChange={(event) => dispatch(setCurrentPage(event.selected + 1))}
       pageRangeDisplayed={5}
-      pageCount={amountPages}
+      forcePage={parseInt(currentPage - 1)}
+      pageCount={pagesAmount}
       previousLabel="<"
       renderOnZeroPageCount={null}
     />

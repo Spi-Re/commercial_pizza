@@ -11,6 +11,7 @@ import { sortTypes } from '../components/Sort';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setCategory, setSortType, setSortOrder } from '../redux/slices/filterSlice';
+import { setCurrentPage } from '../redux/slices/paginationSlice';
 
 const BACKEND_URL = 'https://63c56aabf3a73b347855bbb1.mockapi.io';
 
@@ -51,15 +52,20 @@ const Main = () => {
     writeQueryStringToState(event.state.page);
   });
 
-  // Запись query string в state
+  // Запись query string в state при popState
+  //TODO: Сделать правильное отобраэение поля sort(asc, desc)
+  //TODO: Нужно ли делать полную queryString с полем поиска и проч?
   const writeQueryStringToState = (queryString) => {
-    if (queryString) {
-      const { sortType, sortOrder, categoryIndexState } = qs.parse(queryString);
-      const sortObj = sortTypes.find((item) => item.type === sortType);
+    // dispatch(onChangeSearchValue(''));
 
-      dispatch(setCategory(parseInt(categoryIndexState)));
-      dispatch(setSortOrder(parseInt(sortOrder)));
+    if (queryString) {
+      const { sortBy, sort, category, p } = qs.parse(queryString);
+      const sortObj = sortTypes.find((item) => item.type === sortBy);
+
+      dispatch(setCategory(parseInt(category)));
+      dispatch(setSortOrder(parseInt(sort)));
       dispatch(setSortType(sortObj));
+      dispatch(setCurrentPage(p));
     }
   };
 
@@ -83,9 +89,10 @@ const Main = () => {
   // запись в queryString при изменении фильтров
   React.useEffect(() => {
     const queryString = qs.stringify({
-      categoryIndexState,
-      sortType: sortType.type,
-      sortOrder,
+      category: categoryIndexState,
+      sortBy: sortType.type,
+      sort: sortOrder,
+      p: currentPage,
     });
 
     !onHistoryMove.current &&
