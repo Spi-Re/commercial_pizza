@@ -396,10 +396,13 @@ body {
     margin: 0 auto;
     max-width: 520px;
     text-align: center;
+    @media (min-width: 920px) {
+      margin-top: 50px;
+    }
 
     h2 {
       font-size: 38px;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       @media (max-width: 420px) {
         font-size: 25px;
         font-weight: 700;
