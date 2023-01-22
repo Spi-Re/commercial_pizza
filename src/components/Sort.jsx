@@ -16,6 +16,17 @@ function Sort() {
   const sortOrder = useSelector((state) => state.filter.sortOrder);
   const chosenSortTypeName = useSelector((state) => state.filter.sortType.name);
 
+  const handlerClosePopup = (event) => {
+    !event.target.closest('.sort') && setIsVisible(false);
+  };
+
+  React.useEffect(() => {
+    document.addEventListener('click', handlerClosePopup, true);
+    return () => {
+      document.removeEventListener('click', handlerClosePopup, true);
+    };
+  }, []);
+
   return (
     <div
       className="sort"
