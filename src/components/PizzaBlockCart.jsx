@@ -67,7 +67,7 @@ function PizzaBlockCart({ personal_id, title, imageUrl, doughType, size, count, 
         </div>
       </div>
       <div className="cart__item-price">
-        <b>${price}</b>
+        <b>${price * count}</b>
       </div>
       <div className="cart__item-remove">
         <button

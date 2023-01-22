@@ -1,14 +1,15 @@
 import React from 'react';
 import debounce from 'lodash.debounce';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { onChangeSearchValue } from '../../redux/slices/searchSlice';
+import { setCurrentPage } from '../../redux/slices/paginationSlice';
 
 import styles from './SearchBar.module.scss';
 
 function SearchBar() {
   const dispatch = useDispatch();
-  const [inputValue, setInputValue] = React.useState();
+  const [inputValue, setInputValue] = React.useState('');
 
   const inputRef = React.useRef();
 
@@ -20,9 +21,9 @@ function SearchBar() {
 
   const onChangeInput = (event) => {
     const value = event.target.value;
-    console.log('value:' + value);
     onDebouneChangeSearchValue(value);
     setInputValue(value);
+    dispatch(setCurrentPage(1));
   };
 
   const onDebouneChangeSearchValue = React.useCallback(

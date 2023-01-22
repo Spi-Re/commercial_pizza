@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import qs from 'qs';
 
 import Categories from '../components/Categories';
@@ -9,42 +8,26 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 import { sortTypes } from '../components/Sort';
 
+import { fetchPizza } from '../redux/slices/pizzaSlice';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { setCategory, setSortType, setSortOrder } from '../redux/slices/filterSlice';
 import { setCurrentPage } from '../redux/slices/paginationSlice';
-
-const BACKEND_URL = 'https://63c56aabf3a73b347855bbb1.mockapi.io';
 
 const _ORDER = {
   1: 'asc',
   '-1': 'desc',
 };
 
+const _PizzasPerPage = 4;
+
 const Main = () => {
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [pizzas, setPizzas] = React.useState([...new Array(4)]);
+  const { pizzas, loading, error } = useSelector((state) => state.pizzas);
   const { categoryIndexState, sortType, sortOrder } = useSelector((state) => state.filter);
   const searchValue = useSelector((state) => state.search.value);
   const currentPage = useSelector((state) => state.pagination.currentPage);
   const onHistoryMove = React.useRef(false);
-
-  const getPizzas = () => {
-    setIsLoading(true);
-    const categoryIndex = categoryIndexState ? `category=${categoryIndexState}` : '';
-    const searchPizzas = searchValue ? `&search=${searchValue.toLowerCase()}` : '';
-
-    axios
-      .get(
-        `${BACKEND_URL}/pizzas?${categoryIndex}&sortBy=${sortType.type}&order=${_ORDER[sortOrder]}${searchPizzas}&p=${currentPage}&l=4`,
-      )
-      .then((res) => {
-        setPizzas(res.data);
-        setIsLoading(false);
-      });
-
-    window.scrollTo(0, 0);
-  };
 
   // перемещение по history сессии c помощью кнопок
   const onHistoryChange = React.useCallback((event) => {
@@ -83,7 +66,12 @@ const Main = () => {
 
   // получение пицц при изменении фильтров
   React.useEffect(() => {
-    getPizzas();
+    const categoryIndex = categoryIndexState ? `category=${categoryIndexState}` : '';
+    const searchPizzas = searchValue ? `&search=${searchValue.toLowerCase()}` : '';
+    const sortOrderBy = _ORDER[sortOrder];
+
+    dispatch(fetchPizza({ categoryIndex, searchPizzas, sortType, sortOrderBy, currentPage }));
+    window.scrollTo(0, 0);
   }, [categoryIndexState, sortType, sortOrder, searchValue, currentPage]);
 
   // запись в queryString при изменении фильтров
@@ -91,7 +79,7 @@ const Main = () => {
     const queryString = qs.stringify({
       category: categoryIndexState,
       sortBy: sortType.type,
-      sort: sortOrder,
+      sort: _ORDER[sortOrder],
       p: currentPage,
     });
 
@@ -101,6 +89,10 @@ const Main = () => {
     onHistoryMove.current = false;
   }, [categoryIndexState, sortType, sortOrder, currentPage]);
 
+  if (error) {
+    return 'К сожалений питсы не были загружены';
+  }
+
   return (
     <div className="container">
       <div className="content__top">
@@ -109,9 +101,11 @@ const Main = () => {
       </div>
       <h2 className="content__title">All Pizzas</h2>
       <div className="content__items">
-        {pizzas.map((item, index) => {
-          return isLoading ? <Skeleton key={index} /> : <PizzaBlock key={item.id} {...item} />;
-        })}
+        {loading
+          ? new Array(_PizzasPerPage).fill('i').map((_, index) => <Skeleton key={index} />)
+          : pizzas.map((item) => {
+              return <PizzaBlock key={item.id} {...item} />;
+            })}
       </div>
       <Pagination />
     </div>

@@ -2,6 +2,8 @@ import React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setSortType, setSortOrder } from '../redux/slices/filterSlice';
+import { setCurrentPage } from '../redux/slices/paginationSlice';
+// import { setCurrentPage } from '../redux/slices/paginationSlice';
 
 export const sortTypes = [
   { name: 'popularity', type: 'rating' },
@@ -15,6 +17,11 @@ function Sort() {
 
   const sortOrder = useSelector((state) => state.filter.sortOrder);
   const chosenSortTypeName = useSelector((state) => state.filter.sortType.name);
+
+  const handleSortChange = (sortType) => {
+    dispatch(setSortType(sortType));
+    dispatch(setCurrentPage(1));
+  };
 
   const handlerClosePopup = (event) => {
     !event.target.closest('.sort') && setIsVisible(false);
@@ -56,7 +63,7 @@ function Sort() {
               return (
                 <li
                   key={index}
-                  onPointerUp={() => dispatch(setSortType(sortType))}
+                  onPointerUp={() => handleSortChange(sortType)}
                   className={
                     chosenSortTypeName === sortType.name ? `active for-selection` : `for-selection`
                   }>

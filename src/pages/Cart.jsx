@@ -26,7 +26,7 @@ function Cart() {
             <br />
             To choose a pizza, return back to selection.
           </p>
-          <img src={emptyCart} alt="Empty cart" />
+          <img src={emptyCart} alt="Empty cart" height="250" />
           <Link to="/" className="button button--black">
             <span>Back to selection</span>
           </Link>
