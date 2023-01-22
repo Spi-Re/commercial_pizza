@@ -24,7 +24,7 @@ function PizzaBlock({ id, imageUrl, title, price, sizes, types }) {
   };
   return (
     <div className="pizza-block">
-      <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+      <img className="pizza-block__image" src={imageUrl} alt="Pizza" height="250" />
       <h4 className="pizza-block__title">{title}</h4>
       <div className="pizza-block__selector">
         <ul>
