@@ -1,9 +1,8 @@
 import React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setSortType, setSortOrder } from '../redux/slices/filterSlice';
+import { setSortType, setSortOrder, selectFilter } from '../redux/slices/filterSlice';
 import { setCurrentPage } from '../redux/slices/paginationSlice';
-// import { setCurrentPage } from '../redux/slices/paginationSlice';
 
 export const sortTypes = [
   { name: 'popularity', type: 'rating' },
@@ -15,8 +14,12 @@ function Sort() {
   const dispatch = useDispatch();
   const [isVisible, setIsVisible] = React.useState(false);
 
-  const sortOrder = useSelector((state) => state.filter.sortOrder);
-  const chosenSortTypeName = useSelector((state) => state.filter.sortType.name);
+  const { sortOrder, sortType } = useSelector(selectFilter);
+  const { name: chosenSortTypeName } = sortType;
+
+  const handleSortOrder = () => {
+    dispatch(setSortOrder(-sortOrder));
+  };
 
   const handleSortChange = (sortType) => {
     dispatch(setSortType(sortType));
@@ -42,7 +45,7 @@ function Sort() {
       }}>
       <div className="sort__label">
         <svg
-          onClick={() => dispatch(setSortOrder(-sortOrder))}
+          onClick={handleSortOrder}
           width="10"
           height="6"
           viewBox="0 0 10 6"

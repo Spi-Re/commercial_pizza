@@ -23,24 +23,25 @@ const _PizzasPerPage = 4;
 
 const Main = () => {
   const dispatch = useDispatch();
+
   const { pizzas, loading, error } = useSelector((state) => state.pizzas);
   const { categoryIndexState, sortType, sortOrder } = useSelector((state) => state.filter);
   const searchValue = useSelector((state) => state.search.value);
   const currentPage = useSelector((state) => state.pagination.currentPage);
-  const onHistoryMove = React.useRef(false);
+  const isHistoryMove = React.useRef(false);
 
   // перемещение по history сессии c помощью кнопок
   const onHistoryChange = React.useCallback((event) => {
-    onHistoryMove.current = true;
+    isHistoryMove.current = true;
     writeQueryStringToState(event.state.page);
   });
 
-  // Запись query string в state при popState
+  // Запись query string в state при popstate
   //TODO: Сделать правильное отобраэение поля sort(asc, desc)
   //TODO: Нужно ли делать полную queryString с полем поиска и проч?
+  // FIXME: Сдлеать один метод для одинаковых фильтров
   const writeQueryStringToState = (queryString) => {
     // dispatch(onChangeSearchValue(''));
-
     if (queryString) {
       const { sortBy, sort, category, p } = qs.parse(queryString);
       const sortObj = sortTypes.find((item) => item.type === sortBy);
@@ -71,6 +72,7 @@ const Main = () => {
     const sortOrderBy = _ORDER[sortOrder];
 
     dispatch(fetchPizza({ categoryIndex, searchPizzas, sortType, sortOrderBy, currentPage }));
+
     window.scrollTo(0, 0);
   }, [categoryIndexState, sortType, sortOrder, searchValue, currentPage]);
 
@@ -83,10 +85,10 @@ const Main = () => {
       p: currentPage,
     });
 
-    !onHistoryMove.current &&
+    !isHistoryMove.current &&
       window.history.pushState({ page: queryString }, '', `?${queryString}`);
 
-    onHistoryMove.current = false;
+    isHistoryMove.current = false;
   }, [categoryIndexState, sortType, sortOrder, currentPage]);
 
   if (error) {

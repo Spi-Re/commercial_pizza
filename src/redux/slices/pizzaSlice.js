@@ -8,6 +8,7 @@ export const fetchPizza = createAsyncThunk('pizza/fetchPizzaServer', async (para
   const { data } = await axios.get(
     `${BACKEND_URL}/pizzas?${categoryIndex}&sortBy=${sortType.type}&order=${sortOrderBy}${searchPizzas}&p=${currentPage}&l=4`,
   );
+
   return data;
 });
 
