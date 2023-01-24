@@ -19,7 +19,7 @@ const Pagination: React.FC = () => {
       nextLabel=">"
       onPageChange={(event) => dispatch(setCurrentPage(event.selected + 1))}
       pageRangeDisplayed={5}
-      //@ts-ignore
+      // @ts-ignore
       forcePage={parseInt(currentPage - 1)}
       pageCount={pagesAmount}
       previousLabel="<"

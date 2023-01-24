@@ -66,7 +66,7 @@ function Cart() {
               </svg>
               Cart
             </h2>
-            <button onClick={() => handlerClearCart()} className="cart__clear">
+            <button onClick={handlerClearCart} className="cart__clear">
               <svg
                 width="20"
                 height="20"

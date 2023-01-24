@@ -31,9 +31,11 @@ const PizzaBlockCart: React.FC<PizzaBlockCartProps> = ({
   const handleMinusPizza = () => {
     dispatch(onMinusPizza({ personal_id, price }));
   };
+
   const handlePlusPizza = () => {
     dispatch(onPlusPizza({ personal_id, price }));
   };
+
   return (
     <div className="cart__item">
       <div className="cart__item-img">
@@ -45,7 +47,7 @@ const PizzaBlockCart: React.FC<PizzaBlockCartProps> = ({
       </div>
       <div className="cart__item-count">
         <div
-          onClick={() => handleMinusPizza()}
+          onClick={handleMinusPizza}
           className="button button--outline button--circle cart__item-count-minus">
           <svg
             width="10"
@@ -65,7 +67,7 @@ const PizzaBlockCart: React.FC<PizzaBlockCartProps> = ({
         </div>
         <b>{count}</b>
         <div
-          onClick={() => handlePlusPizza()}
+          onClick={handlePlusPizza}
           className="button button--outline button--circle cart__item-count-plus">
           <svg
             width="10"
@@ -88,11 +90,7 @@ const PizzaBlockCart: React.FC<PizzaBlockCartProps> = ({
         <b>${price * count}</b>
       </div>
       <div className="cart__item-remove">
-        <button
-          onClick={() => {
-            handleDeleteItem();
-          }}
-          className="button button--outline button--circle">
+        <button onClick={handleDeleteItem} className="button button--outline button--circle">
           <svg
             width="10"
             height="10"

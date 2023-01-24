@@ -1,8 +1,7 @@
-import React from 'react';
 import LogoSVG from '../assets/img/pizza-logo.svg';
 
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
 import { useSelector } from 'react-redux';
 
 import SearchBar from './SearchBar';

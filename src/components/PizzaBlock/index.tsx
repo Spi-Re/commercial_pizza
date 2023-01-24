@@ -19,6 +19,7 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, imageUrl, title, price, siz
   const [pizzaSize, setPizzaSize] = React.useState<number>(0);
   //@ts-ignore
   const pizzaInCart = useSelector((state) => state.cart.pizzas.filter((item) => item.id === id));
+
   const obj = {
     id,
     personal_id: `${title}-${doughTypes[doughType]}-${sizes[pizzaSize]}`,
@@ -32,6 +33,7 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, imageUrl, title, price, siz
   const handleAddToCart = () => {
     dispatch(onPlusPizza(obj));
   };
+
   return (
     <div className="pizza-block">
       <img className="pizza-block__image" src={imageUrl} alt="Pizza" height="250" />
@@ -64,7 +66,7 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, imageUrl, title, price, siz
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">from ${price}</div>
-        <button onClick={() => handleAddToCart()} className="button button--outline button--add">
+        <button onClick={handleAddToCart} className="button button--outline button--add">
           <svg
             width="12"
             height="12"

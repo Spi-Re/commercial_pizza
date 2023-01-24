@@ -13,6 +13,7 @@ import { fetchPizza } from '../redux/slices/pizzaSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCategory, setSortType, setSortOrder } from '../redux/slices/filterSlice';
 import { setCurrentPage } from '../redux/slices/paginationSlice';
+import { ReactReduxContextInstance } from 'react-redux/es/components/Context';
 
 const _PizzasPerPage = 4;
 
@@ -34,7 +35,7 @@ const Main: React.FC = () => {
 
   // перемещение по history сессии c помощью кнопок
   // @ts-ignore
-  const onHistoryChange: any = React.useCallback((event) => {
+  const onHistoryChange = React.useCallback((event: React.PopStateEvent<Window>) => {
     isHistoryMove.current = true;
     writeQueryStringToState(event.state.page);
   });
@@ -95,7 +96,7 @@ const Main: React.FC = () => {
   }, [categoryIndexState, sortType, sortOrder, currentPage]);
 
   if (error) {
-    return <>'К сожалений питсы не были загружены'</>;
+    return <>'unfortunately, pizzas weren't be downloaded. Please, try it later.'</>;
   }
 
   return (

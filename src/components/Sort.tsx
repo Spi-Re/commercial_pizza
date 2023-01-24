@@ -17,7 +17,7 @@ const orderTypes = {
 
 const Sort: React.FC = () => {
   const dispatch = useDispatch();
-  const [isVisible, setIsVisible] = React.useState(false);
+  const [isVisible, setIsVisible] = React.useState<boolean>(false);
 
   const { sortOrder, sortType } = useSelector(selectFilter);
   const { name: chosenSortTypeName } = sortType;
@@ -27,13 +27,19 @@ const Sort: React.FC = () => {
     dispatch(setSortOrder(orderTypes[sortOrder]));
   };
 
-  const handleSortChange = (sortType: any) => {
+  const handleSortChange = (sortType: { name: string; type: string }) => {
     dispatch(setSortType(sortType));
     dispatch(setCurrentPage(1));
   };
 
-  const handlerClosePopup = (event: any) => {
-    !event.target.closest('.sort') && setIsVisible(false);
+  const handlerClosePopup = (event: Event) => {
+    const _event = event.target as HTMLElement;
+    !_event.closest('.sort') && setIsVisible(false);
+  };
+
+  const handlerSortVisibility = (event: React.PointerEvent<HTMLDivElement>) => {
+    (event.target as HTMLDivElement).closest('.for-selection') &&
+      setIsVisible((visible) => !visible);
   };
 
   React.useEffect(() => {
@@ -44,12 +50,7 @@ const Sort: React.FC = () => {
   }, []);
 
   return (
-    <div
-      className="sort"
-      onPointerUp={(event) => {
-        //@ts-ignore
-        event.target.closest('.for-selection') && setIsVisible((visible) => !visible);
-      }}>
+    <div className="sort" onClick={handlerSortVisibility}>
       <div className="sort__label">
         <svg
           onClick={handleSortOrder}

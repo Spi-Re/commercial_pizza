@@ -19,8 +19,8 @@ const SearchBar: React.FC = () => {
     inputRef.current?.focus();
   };
 
-  const onChangeInput = (event: any) => {
-    const value = event.target.value;
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
     onDebouneChangeSearchValue(value);
     setInputValue(value);
     dispatch(setCurrentPage(1));
@@ -39,7 +39,7 @@ const SearchBar: React.FC = () => {
         <input
           ref={inputRef}
           value={inputValue}
-          onChange={(event) => onChangeInput(event)}
+          onChange={onChangeInput}
           className={styles.input}
           placeholder="Search pizzas..."
         />
