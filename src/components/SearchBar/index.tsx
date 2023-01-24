@@ -7,19 +7,19 @@ import { setCurrentPage } from '../../redux/slices/paginationSlice';
 
 import styles from './SearchBar.module.scss';
 
-function SearchBar() {
+const SearchBar: React.FC = () => {
   const dispatch = useDispatch();
-  const [inputValue, setInputValue] = React.useState('');
+  const [inputValue, setInputValue] = React.useState<string>('');
 
-  const inputRef = React.useRef();
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const onClearInput = () => {
     dispatch(onChangeSearchValue(''));
     setInputValue('');
-    inputRef.current.focus();
+    inputRef.current?.focus();
   };
 
-  const onChangeInput = (event) => {
+  const onChangeInput = (event: any) => {
     const value = event.target.value;
     onDebouneChangeSearchValue(value);
     setInputValue(value);
@@ -80,6 +80,6 @@ function SearchBar() {
       </div>
     </div>
   );
-}
+};
 
 export default SearchBar;

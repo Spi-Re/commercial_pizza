@@ -4,10 +4,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { onPlusPizza } from '../../redux/slices/cartSlice';
 const doughTypes = ['thin crust', 'traditional'];
 
-function PizzaBlock({ id, imageUrl, title, price, sizes, types }) {
+type PizzaBlockProps = {
+  id: number;
+  imageUrl: string;
+  title: string;
+  price: number;
+  sizes: number[];
+  types: number[];
+};
+
+const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, imageUrl, title, price, sizes, types }) => {
   const dispatch = useDispatch();
-  const [doughType, setDoughType] = React.useState(0);
-  const [pizzaSize, setPizzaSize] = React.useState(0);
+  const [doughType, setDoughType] = React.useState<number>(0);
+  const [pizzaSize, setPizzaSize] = React.useState<number>(0);
+  //@ts-ignore
   const pizzaInCart = useSelector((state) => state.cart.pizzas.filter((item) => item.id === id));
   const obj = {
     id,
@@ -43,7 +53,7 @@ function PizzaBlock({ id, imageUrl, title, price, sizes, types }) {
           {sizes.map((size, index) => {
             return (
               <li
-                key={(size, index)}
+                key={index}
                 onClick={() => setPizzaSize(index)}
                 className={index === pizzaSize ? 'active' : ''}>
                 {size} cm
@@ -68,12 +78,12 @@ function PizzaBlock({ id, imageUrl, title, price, sizes, types }) {
           </svg>
           <span>Add</span>
           {pizzaInCart.length > 0 && (
-            <i>{pizzaInCart.reduce((sum, item) => (sum += item.count), 0)}</i>
+            <i>{pizzaInCart.reduce((sum: number, item: any) => (sum += item.count), 0)}</i>
           )}
         </button>
       </div>
     </div>
   );
-}
+};
 
 export default PizzaBlock;

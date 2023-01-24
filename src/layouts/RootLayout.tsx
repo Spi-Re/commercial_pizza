@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 import Header from '../components/Header';
 
-function RootLayout() {
+const RootLayout: React.FC = () => {
   return (
     <>
       <div className="wrapper">
@@ -14,6 +14,6 @@ function RootLayout() {
       </div>
     </>
   );
-}
+};
 
 export default RootLayout;

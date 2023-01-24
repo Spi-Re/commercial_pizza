@@ -3,7 +3,25 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { onDeletePizza, onMinusPizza, onPlusPizza } from '../redux/slices/cartSlice';
 
-function PizzaBlockCart({ personal_id, title, imageUrl, doughType, size, count, price }) {
+type PizzaBlockCartProps = {
+  personal_id: string;
+  title: string;
+  imageUrl: string;
+  doughType: number;
+  size: number;
+  count: number;
+  price: number;
+};
+
+const PizzaBlockCart: React.FC<PizzaBlockCartProps> = ({
+  personal_id,
+  title,
+  imageUrl,
+  doughType,
+  size,
+  count,
+  price,
+}) => {
   const dispatch = useDispatch();
 
   const handleDeleteItem = () => {
@@ -94,6 +112,6 @@ function PizzaBlockCart({ personal_id, title, imageUrl, doughType, size, count, 
       </div>
     </div>
   );
-}
+};
 
 export default PizzaBlockCart;

@@ -1,20 +1,22 @@
 import React from 'react';
 
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
   RouterProvider,
 } from 'react-router-dom';
-import './scss/app.scss';
 
 // импорт страниц
 import Main from './pages/Main';
 import NotFound from './pages/NotFound';
 import Cart from './pages/Cart';
-
-// обёртка над всеми роутерами
 import RootLayout from './layouts/RootLayout';
+
+import './scss/app.scss';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,9 +28,12 @@ const router = createBrowserRouter(
   ),
 );
 
-// Финальное отображение router
-function App() {
-  return <RouterProvider router={router} />;
-}
+const App: React.FC = () => {
+  return (
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  );
+};
 
 export default App;

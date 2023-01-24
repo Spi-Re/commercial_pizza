@@ -1,20 +1,23 @@
+import React from 'react';
 import LogoSVG from '../assets/img/pizza-logo.svg';
+
 import { Link, useLocation } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
 
 import SearchBar from './SearchBar';
 
-function Header() {
+const Header: React.FC = () => {
   const { pathname } = useLocation();
   const indexPage = pathname === '/';
 
+  //@ts-ignore
   const { totalPizzas, orderPrice } = useSelector((state) => state.cart);
 
   return (
     <div className="header">
       <div className="container">
-        <Link to="/">
+        <Link to={'/'}>
           <div className="header__logo">
             <img width="38" src={LogoSVG} alt="Pizza logo" />
             <div>
@@ -63,6 +66,6 @@ function Header() {
       {indexPage && <SearchBar />}
     </div>
   );
-}
+};
 
 export default Header;

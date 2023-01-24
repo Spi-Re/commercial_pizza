@@ -6,11 +6,12 @@ import { setCurrentPage } from '../redux/slices/paginationSlice';
 
 const pizzasCategories = ['All', 'Meat', 'Vegetarian', 'Grill', 'Spicy', 'Closed'];
 
-const Categories = () => {
+const Categories: React.FC = () => {
+  //@ts-ignore
   const currentCategoryIndex = useSelector((state) => state.filter.categoryIndexState);
   const dispatch = useDispatch();
 
-  const handleChangeCategories = (index) => {
+  const handleChangeCategories = (index: number) => {
     dispatch(setCurrentPage(1));
     dispatch(setCategory(index));
   };

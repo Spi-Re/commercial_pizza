@@ -14,40 +14,41 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setCategory, setSortType, setSortOrder } from '../redux/slices/filterSlice';
 import { setCurrentPage } from '../redux/slices/paginationSlice';
 
-const _ORDER = {
-  1: 'asc',
-  '-1': 'desc',
-};
-
 const _PizzasPerPage = 4;
 
-const Main = () => {
+// TODO: При клики на лого - возврат на главную | Нужен сброс фильтров.
+// TODO: Нужен сброс фильтров при переходе по back из cart.
+// TODO: Заглушку для ошибки при запросе.
+const Main: React.FC = () => {
   const dispatch = useDispatch();
 
+  //@ts-ignore
   const { pizzas, loading, error } = useSelector((state) => state.pizzas);
+  //@ts-ignore
   const { categoryIndexState, sortType, sortOrder } = useSelector((state) => state.filter);
+  //@ts-ignore
   const searchValue = useSelector((state) => state.search.value);
+  //@ts-ignore
   const currentPage = useSelector((state) => state.pagination.currentPage);
-  const isHistoryMove = React.useRef(false);
+  const isHistoryMove = React.useRef<boolean>(false);
 
   // перемещение по history сессии c помощью кнопок
-  const onHistoryChange = React.useCallback((event) => {
+  // @ts-ignore
+  const onHistoryChange: any = React.useCallback((event) => {
     isHistoryMove.current = true;
     writeQueryStringToState(event.state.page);
   });
 
+  //TODO: Добавить в url поле search
+  //TODO: Один метод для одного slice
   // Запись query string в state при popstate
-  //TODO: Сделать правильное отобраэение поля sort(asc, desc)
-  //TODO: Нужно ли делать полную queryString с полем поиска и проч?
-  // FIXME: Сдлеать один метод для одинаковых фильтров
-  const writeQueryStringToState = (queryString) => {
-    // dispatch(onChangeSearchValue(''));
+  const writeQueryStringToState = (queryString: string) => {
     if (queryString) {
       const { sortBy, sort, category, p } = qs.parse(queryString);
       const sortObj = sortTypes.find((item) => item.type === sortBy);
-
+      //@ts-ignore
       dispatch(setCategory(parseInt(category)));
-      dispatch(setSortOrder(parseInt(sort)));
+      dispatch(setSortOrder(sort));
       dispatch(setSortType(sortObj));
       dispatch(setCurrentPage(p));
     }
@@ -60,6 +61,7 @@ const Main = () => {
       const queryString = window.location.search.slice(1);
       writeQueryStringToState(queryString);
     }
+
     return () => {
       window.removeEventListener('popstate', onHistoryChange);
     };
@@ -69,8 +71,9 @@ const Main = () => {
   React.useEffect(() => {
     const categoryIndex = categoryIndexState ? `category=${categoryIndexState}` : '';
     const searchPizzas = searchValue ? `&search=${searchValue.toLowerCase()}` : '';
-    const sortOrderBy = _ORDER[sortOrder];
+    const sortOrderBy = sortOrder;
 
+    //@ts-ignore
     dispatch(fetchPizza({ categoryIndex, searchPizzas, sortType, sortOrderBy, currentPage }));
 
     window.scrollTo(0, 0);
@@ -81,7 +84,7 @@ const Main = () => {
     const queryString = qs.stringify({
       category: categoryIndexState,
       sortBy: sortType.type,
-      sort: _ORDER[sortOrder],
+      sort: sortOrder,
       p: currentPage,
     });
 
@@ -92,7 +95,7 @@ const Main = () => {
   }, [categoryIndexState, sortType, sortOrder, currentPage]);
 
   if (error) {
-    return 'К сожалений питсы не были загружены';
+    return <>'К сожалений питсы не были загружены'</>;
   }
 
   return (
@@ -105,7 +108,8 @@ const Main = () => {
       <div className="content__items">
         {loading
           ? new Array(_PizzasPerPage).fill('i').map((_, index) => <Skeleton key={index} />)
-          : pizzas.map((item) => {
+          : //@ts-ignore
+            pizzas.map((item) => {
               return <PizzaBlock key={item.id} {...item} />;
             })}
       </div>

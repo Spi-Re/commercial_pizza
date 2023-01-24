@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from './NotFound.module.scss';
 
-function NotFound() {
+const NotFound: React.FC = () => {
   return (
     <div className={styles.content}>
       <span>😕</span>
@@ -10,6 +10,6 @@ function NotFound() {
       <p>Страница не найдена</p>
     </div>
   );
-}
+};
 
 export default NotFound;

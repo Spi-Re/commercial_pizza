@@ -1,7 +1,7 @@
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 
-const MyLoader = (props) => (
+const Skeleton: React.FC = () => (
   <ContentLoader
     className="pizza-block"
     speed={2}
@@ -9,8 +9,7 @@ const MyLoader = (props) => (
     height={457}
     viewBox="0 0 280 467"
     backgroundColor="#f3f3f3"
-    foregroundColor="#ecebeb"
-    {...props}>
+    foregroundColor="#ecebeb">
     <circle cx="140" cy="125" r="125" />
     <rect x="0" y="275" rx="0" ry="0" width="280" height="25" />
     <rect x="0" y="315" rx="10" ry="10" width="280" height="80" />
@@ -19,4 +18,4 @@ const MyLoader = (props) => (
   </ContentLoader>
 );
 
-export default MyLoader;
+export default Skeleton;

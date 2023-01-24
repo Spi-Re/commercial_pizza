@@ -8,6 +8,7 @@ import emptyCart from '../assets/img/empty-cart.png';
 
 function Cart() {
   const dispatch = useDispatch();
+  //@ts-ignore
   const { totalPizzas, orderPrice, pizzas } = useSelector((state) => state.cart);
 
   const handlerClearCart = () => {
@@ -106,7 +107,7 @@ function Cart() {
             </button>
           </div>
           <div className="content__items">
-            {pizzas.map((pizza) => (
+            {pizzas.map((pizza: any) => (
               <PizzaBlockCart key={pizza.personal_id} {...pizza} />
             ))}
           </div>

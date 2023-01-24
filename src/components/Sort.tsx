@@ -10,7 +10,12 @@ export const sortTypes = [
   { name: 'alphabetically', type: 'title' },
 ];
 
-function Sort() {
+const orderTypes = {
+  desc: 'asc',
+  asc: 'desc',
+};
+
+const Sort: React.FC = () => {
   const dispatch = useDispatch();
   const [isVisible, setIsVisible] = React.useState(false);
 
@@ -18,15 +23,16 @@ function Sort() {
   const { name: chosenSortTypeName } = sortType;
 
   const handleSortOrder = () => {
-    dispatch(setSortOrder(-sortOrder));
+    // @ts-ignore
+    dispatch(setSortOrder(orderTypes[sortOrder]));
   };
 
-  const handleSortChange = (sortType) => {
+  const handleSortChange = (sortType: any) => {
     dispatch(setSortType(sortType));
     dispatch(setCurrentPage(1));
   };
 
-  const handlerClosePopup = (event) => {
+  const handlerClosePopup = (event: any) => {
     !event.target.closest('.sort') && setIsVisible(false);
   };
 
@@ -41,6 +47,7 @@ function Sort() {
     <div
       className="sort"
       onPointerUp={(event) => {
+        //@ts-ignore
         event.target.closest('.for-selection') && setIsVisible((visible) => !visible);
       }}>
       <div className="sort__label">
@@ -79,6 +86,6 @@ function Sort() {
       )}
     </div>
   );
-}
+};
 
 export default Sort;

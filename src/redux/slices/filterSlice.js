@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   categoryIndexState: 0,
   sortType: { name: 'popularity', type: 'rating' },
-  sortOrder: 1,
+  sortOrder: 'asc',
 };
 
 const filterSlice = createSlice({
