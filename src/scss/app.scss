@@ -225,8 +225,6 @@ body {
       align-items: center;
       justify-content: space-between;
 
-      // width: 13%;
-
       @media (max-width: 480px) {
         margin-left: 30px;
         display: inline-flex;
@@ -242,6 +240,17 @@ body {
         svg {
           path:first-of-type {
             display: none;
+          }
+        }
+
+        &:disabled {
+          border-color: #787878;
+          background: inherit;
+          opacity: 0.4;
+          transform: none;
+
+          svg path {
+            fill: #787878;
           }
         }
       }

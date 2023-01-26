@@ -7,7 +7,7 @@ import { RootState } from '../../redux/store';
 
 import styles from './Pagination.module.scss';
 
-const Pagination: React.FC = () => {
+const Pagination: React.FC = React.memo(() => {
   const dispatch = useDispatch();
 
   const { pagesAmount, currentPage } = useSelector((state: RootState) => state.filter.pagination);
@@ -25,6 +25,6 @@ const Pagination: React.FC = () => {
       previousLabel="<"
     />
   );
-};
+});
 
 export default Pagination;

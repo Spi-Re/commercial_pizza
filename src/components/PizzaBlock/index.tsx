@@ -1,8 +1,10 @@
 import React from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useWhyDidYouUpdate } from 'ahooks';
+
+import { useSelector } from 'react-redux';
 import { onPlusPizza } from '../../redux/slices/cartSlice';
-import { RootState } from '../../redux/store';
+import { RootState, useAppDispatch } from '../../redux/store';
 const doughTypes = ['thin crust', 'traditional'];
 
 type PizzaBlockProps = {
@@ -15,9 +17,10 @@ type PizzaBlockProps = {
 };
 
 const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, imageUrl, title, price, sizes, types }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [doughType, setDoughType] = React.useState<number>(0);
   const [pizzaSize, setPizzaSize] = React.useState<number>(0);
+
   const pizzaInCart = useSelector((state: RootState) =>
     state.cart.pizzas.filter((item) => item.id === id),
   );

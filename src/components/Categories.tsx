@@ -7,7 +7,7 @@ import { RootState } from '../redux/store';
 
 const pizzasCategories = ['All', 'Meat', 'Vegetarian', 'Grill', 'Spicy', 'Closed'];
 
-const Categories: React.FC = () => {
+const Categories: React.FC = React.memo(() => {
   const currentCategoryIndex = useSelector((state: RootState) => state.filter.categoryIndexState);
   const dispatch = useDispatch();
 
@@ -31,6 +31,6 @@ const Categories: React.FC = () => {
       </ul>
     </div>
   );
-};
+});
 
 export default Categories;

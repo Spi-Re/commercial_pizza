@@ -29,9 +29,12 @@ const cartSlice = createSlice({
   reducers: {
     onPlusPizza(state, { payload: newPizza }: PayloadAction<Pizza>) {
       const samePizzaInCart = findPizza(state.pizzas, newPizza);
+      samePizzaInCart && samePizzaInCart.count++;
 
-      samePizzaInCart ? samePizzaInCart.count++ : state.pizzas.push(newPizza);
-      !samePizzaInCart && (newPizza.count = 1);
+      if (!samePizzaInCart) {
+        state.pizzas.push(newPizza);
+        newPizza.count = 1;
+      }
 
       state.orderPrice += newPizza.price;
       state.totalPizzas++;
@@ -41,16 +44,6 @@ const cartSlice = createSlice({
       if (!samePizzaInCart) return;
 
       samePizzaInCart.count--;
-
-      // Чтобы пицца не удалялась при счётчике в 0
-      if (samePizzaInCart.count === -1) {
-        const index = state.pizzas.indexOf(samePizzaInCart);
-        state.pizzas.splice(index, 1);
-
-        state.totalPizzas++;
-        state.orderPrice += samePizzaInCart.price;
-      }
-
       state.totalPizzas--;
       state.orderPrice -= samePizzaInCart.price;
     },
