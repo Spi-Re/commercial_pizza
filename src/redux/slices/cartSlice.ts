@@ -67,11 +67,11 @@ const cartSlice = createSlice({
       state.orderPrice -= price * count;
     },
 
-    onClearCart({ pizzas, totalPizzas, orderPrice }) {
-      pizzas = [];
+    onClearCart(state) {
+      state.pizzas = [];
 
-      totalPizzas = 0;
-      orderPrice = 0;
+      state.totalPizzas = 0;
+      state.orderPrice = 0;
     },
   },
 });
