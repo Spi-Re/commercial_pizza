@@ -5,13 +5,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import SearchBar from './SearchBar';
+import { RootState } from '../redux/store';
 
 const Header: React.FC = () => {
   const { pathname } = useLocation();
   const indexPage = pathname === '/';
 
-  //@ts-ignore
-  const { totalPizzas, orderPrice } = useSelector((state) => state.cart);
+  const { totalPizzas, orderPrice } = useSelector((state: RootState) => state.cart);
 
   return (
     <div className="header">

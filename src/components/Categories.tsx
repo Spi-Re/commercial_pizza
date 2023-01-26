@@ -3,12 +3,12 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCategory } from '../redux/slices/filterSlice';
 import { setCurrentPage } from '../redux/slices/filterSlice';
+import { RootState } from '../redux/store';
 
 const pizzasCategories = ['All', 'Meat', 'Vegetarian', 'Grill', 'Spicy', 'Closed'];
 
 const Categories: React.FC = () => {
-  //@ts-ignore
-  const currentCategoryIndex = useSelector((state) => state.filter.categoryIndexState);
+  const currentCategoryIndex = useSelector((state: RootState) => state.filter.categoryIndexState);
   const dispatch = useDispatch();
 
   const handleChangeCategories = (index: number) => {

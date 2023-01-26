@@ -3,14 +3,14 @@ import ReactPaginate from 'react-paginate';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentPage } from '../../redux/slices/filterSlice';
+import { RootState } from '../../redux/store';
 
 import styles from './Pagination.module.scss';
 
 const Pagination: React.FC = () => {
   const dispatch = useDispatch();
 
-  //@ts-ignore
-  const { pagesAmount, currentPage } = useSelector((state) => state.filter.pagination);
+  const { pagesAmount, currentPage } = useSelector((state: RootState) => state.filter.pagination);
 
   return (
     <ReactPaginate

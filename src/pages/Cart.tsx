@@ -5,11 +5,11 @@ import { onClearCart } from '../redux/slices/cartSlice';
 import PizzaBlockCart from '../components/PizzaBlockCart';
 
 import emptyCart from '../assets/img/empty-cart.png';
+import { RootState } from '../redux/store';
 
 const Cart: React.FC = () => {
   const dispatch = useDispatch();
-  //@ts-ignore
-  const { totalPizzas, orderPrice, pizzas } = useSelector((state) => state.cart);
+  const { totalPizzas, orderPrice, pizzas } = useSelector((state: RootState) => state.cart);
 
   const handlerClearCart = () => {
     dispatch(onClearCart());
@@ -107,7 +107,7 @@ const Cart: React.FC = () => {
             </button>
           </div>
           <div className="content__items">
-            {pizzas.map((pizza: any) => (
+            {pizzas.map((pizza) => (
               <PizzaBlockCart key={pizza.personal_id} {...pizza} />
             ))}
           </div>

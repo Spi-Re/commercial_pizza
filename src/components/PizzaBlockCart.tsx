@@ -7,7 +7,7 @@ type PizzaBlockCartProps = {
   personal_id: string;
   title: string;
   imageUrl: string;
-  doughType: number;
+  doughType: string;
   size: number;
   count: number;
   price: number;
