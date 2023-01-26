@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useDispatch } from 'react-redux';
-import { onDeletePizza, onMinusPizza, onPlusPizza } from '../redux/slices/cartSlice';
+import { onDeletePizza, onMinusPizza, onPlusPizza, Pizza } from '../redux/slices/cartSlice';
 
 type PizzaBlockCartProps = {
   personal_id: string;
@@ -23,17 +23,18 @@ const PizzaBlockCart: React.FC<PizzaBlockCartProps> = ({
   price,
 }) => {
   const dispatch = useDispatch();
+  const matchPizza = { personal_id, price } as Pizza;
 
   const handleDeleteItem = () => {
-    dispatch(onDeletePizza(personal_id));
+    dispatch(onDeletePizza(matchPizza));
   };
 
   const handleMinusPizza = () => {
-    dispatch(onMinusPizza({ personal_id, price }));
+    dispatch(onMinusPizza(matchPizza));
   };
 
   const handlePlusPizza = () => {
-    dispatch(onPlusPizza({ personal_id, price }));
+    dispatch(onPlusPizza(matchPizza));
   };
 
   return (

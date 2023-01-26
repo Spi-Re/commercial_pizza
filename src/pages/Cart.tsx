@@ -6,7 +6,7 @@ import PizzaBlockCart from '../components/PizzaBlockCart';
 
 import emptyCart from '../assets/img/empty-cart.png';
 
-function Cart() {
+const Cart: React.FC = () => {
   const dispatch = useDispatch();
   //@ts-ignore
   const { totalPizzas, orderPrice, pizzas } = useSelector((state) => state.cart);
@@ -17,7 +17,7 @@ function Cart() {
 
   return (
     <div className="container container--cart">
-      {!totalPizzas ? (
+      {!pizzas.length ? (
         <div className="cart cart--empty">
           <h2>
             The cart is empty <span>😕</span>
@@ -148,6 +148,6 @@ function Cart() {
       )}
     </div>
   );
-}
+};
 
 export default Cart;

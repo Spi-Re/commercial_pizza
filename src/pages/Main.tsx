@@ -1,19 +1,27 @@
 import React from 'react';
 import qs from 'qs';
 
+import { useSelector } from 'react-redux';
+
 import Categories from '../components/Categories';
-import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
+import Sort from '../components/Sort';
 import { sortTypes } from '../components/Sort';
 
-import { fetchPizza } from '../redux/slices/pizzaSlice';
-
-import { useSelector, useDispatch } from 'react-redux';
-import { setCategory, setSortType, setSortOrder } from '../redux/slices/filterSlice';
-import { setCurrentPage } from '../redux/slices/paginationSlice';
-import { ReactReduxContextInstance } from 'react-redux/es/components/Context';
+import { fetchPizza, Status } from '../redux/slices/pizzaSlice';
+import {
+  setCurrentPage,
+  setCategory,
+  setSortType,
+  setSortOrder,
+  selectFilter,
+  ISortOrder,
+  ISortType,
+  ISortTypeTypes,
+} from '../redux/slices/filterSlice';
+import { RootState, useAppDispatch } from '../redux/store';
 
 const _PizzasPerPage = 4;
 
@@ -21,16 +29,17 @@ const _PizzasPerPage = 4;
 // TODO: Нужен сброс фильтров при переходе по back из cart.
 // TODO: Заглушку для ошибки при запросе.
 const Main: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  //@ts-ignore
-  const { pizzas, loading, error } = useSelector((state) => state.pizzas);
-  //@ts-ignore
-  const { categoryIndexState, sortType, sortOrder } = useSelector((state) => state.filter);
-  //@ts-ignore
-  const searchValue = useSelector((state) => state.search.value);
-  //@ts-ignore
-  const currentPage = useSelector((state) => state.pagination.currentPage);
+  const { pizzas, error, status } = useSelector((state: RootState) => state.pizzas);
+  const {
+    searchValue,
+    pagination: { currentPage },
+    categoryIndexState,
+    sortType,
+    sortOrder,
+  } = useSelector(selectFilter);
+
   const isHistoryMove = React.useRef<boolean>(false);
 
   // перемещение по history сессии c помощью кнопок
@@ -45,13 +54,17 @@ const Main: React.FC = () => {
   // Запись query string в state при popstate
   const writeQueryStringToState = (queryString: string) => {
     if (queryString) {
-      const { sortBy, sort, category, p } = qs.parse(queryString);
-      const sortObj = sortTypes.find((item) => item.type === sortBy);
-      //@ts-ignore
+      type QueryParams = { sortBy: ISortTypeTypes; sort: ISortOrder; category: string; p: string };
+
+      const { sortBy, sort, category, p } = qs.parse(queryString) as unknown as QueryParams;
+
+      if (sortBy) {
+        const sortObj = sortTypes.find((item) => item.type === sortBy) as ISortType;
+        dispatch(setSortType(sortObj));
+      }
       dispatch(setCategory(parseInt(category)));
       dispatch(setSortOrder(sort));
-      dispatch(setSortType(sortObj));
-      dispatch(setCurrentPage(p));
+      dispatch(setCurrentPage(Number(p)));
     }
   };
 
@@ -72,10 +85,8 @@ const Main: React.FC = () => {
   React.useEffect(() => {
     const categoryIndex = categoryIndexState ? `category=${categoryIndexState}` : '';
     const searchPizzas = searchValue ? `&search=${searchValue.toLowerCase()}` : '';
-    const sortOrderBy = sortOrder;
 
-    //@ts-ignore
-    dispatch(fetchPizza({ categoryIndex, searchPizzas, sortType, sortOrderBy, currentPage }));
+    dispatch(fetchPizza({ categoryIndex, searchPizzas, sortType, sortOrder, currentPage }));
 
     window.scrollTo(0, 0);
   }, [categoryIndexState, sortType, sortOrder, searchValue, currentPage]);
@@ -107,10 +118,9 @@ const Main: React.FC = () => {
       </div>
       <h2 className="content__title">All Pizzas</h2>
       <div className="content__items">
-        {loading
-          ? new Array(_PizzasPerPage).fill('i').map((_, index) => <Skeleton key={index} />)
-          : //@ts-ignore
-            pizzas.map((item) => {
+        {status === Status.LOADING
+          ? new Array(_PizzasPerPage).fill('').map((_, index) => <Skeleton key={index} />)
+          : pizzas.map((item) => {
               return <PizzaBlock key={item.id} {...item} />;
             })}
       </div>

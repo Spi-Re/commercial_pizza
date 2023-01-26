@@ -2,8 +2,7 @@ import React from 'react';
 import debounce from 'lodash.debounce';
 
 import { useDispatch } from 'react-redux';
-import { onChangeSearchValue } from '../../redux/slices/searchSlice';
-import { setCurrentPage } from '../../redux/slices/paginationSlice';
+import { setCurrentPage, onChangeSearchValue } from '../../redux/slices/filterSlice';
 
 import styles from './SearchBar.module.scss';
 

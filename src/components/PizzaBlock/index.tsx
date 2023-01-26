@@ -28,6 +28,7 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, imageUrl, title, price, siz
     price,
     size: sizes[pizzaSize],
     doughType: doughTypes[doughType],
+    count: 0,
   };
 
   const handleAddToCart = () => {

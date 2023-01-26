@@ -1,10 +1,17 @@
 import React from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { setSortType, setSortOrder, selectFilter } from '../redux/slices/filterSlice';
-import { setCurrentPage } from '../redux/slices/paginationSlice';
+import { useSelector } from 'react-redux';
+import {
+  setSortType,
+  setSortOrder,
+  selectFilter,
+  ISortType,
+  ISortOrder,
+} from '../redux/slices/filterSlice';
+import { setCurrentPage } from '../redux/slices/filterSlice';
+import { useAppDispatch } from '../redux/store';
 
-export const sortTypes = [
+export const sortTypes: ISortType[] = [
   { name: 'popularity', type: 'rating' },
   { name: 'price', type: 'price' },
   { name: 'alphabetically', type: 'title' },
@@ -16,18 +23,18 @@ const orderTypes = {
 };
 
 const Sort: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isVisible, setIsVisible] = React.useState<boolean>(false);
 
   const { sortOrder, sortType } = useSelector(selectFilter);
   const { name: chosenSortTypeName } = sortType;
 
   const handleSortOrder = () => {
-    // @ts-ignore
-    dispatch(setSortOrder(orderTypes[sortOrder]));
+    const order = orderTypes[sortOrder] as ISortOrder;
+    dispatch(setSortOrder(order));
   };
 
-  const handleSortChange = (sortType: { name: string; type: string }) => {
+  const handleSortChange = (sortType: ISortType) => {
     dispatch(setSortType(sortType));
     dispatch(setCurrentPage(1));
   };
