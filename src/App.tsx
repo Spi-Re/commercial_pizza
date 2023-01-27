@@ -10,7 +10,6 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 
-// импорт страниц
 import Main from './pages/Main';
 import NotFound from './pages/NotFound/NotFoundPage';
 import RootLayout from './layouts/RootLayout';
