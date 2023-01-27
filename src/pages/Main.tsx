@@ -5,20 +5,21 @@ import { Categories, PizzaBlock, Skeleton, Pagination, Sort } from '../component
 import { sortTypes } from '../components/Sort';
 
 import { useSelector } from 'react-redux';
-import { setCurrentPage, setCategory, setSortType, setSortOrder } from '../redux/filter/slice';
+import { setAll } from '../redux/filter/slice';
 import { ISortOrder, ISortType, ISortTypeTypes } from '../redux/filter/types';
 import { selectFilter } from '../redux/filter/selectors';
 import { fetchPizza } from '../redux/pizza/asyncSlice';
 import { Status } from '../redux/pizza/types';
 import { useAppDispatch, RootState } from '../redux/store';
 import { NotFoundPizzas } from './NotFound/NotFoundPizzas';
+import { useNavigate } from 'react-router-dom';
 
 type QueryParams = { sortBy: ISortTypeTypes; sort: ISortOrder; category: string; p: string };
 
 const pizzasPerPage = 4;
 
-// TODO: Заглушку для ошибки при запросе.
 const Main: React.FC = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const { pizzas, error, status } = useSelector((state: RootState) => state.pizzas);
@@ -32,33 +33,21 @@ const Main: React.FC = () => {
 
   const isHistoryMove = React.useRef<boolean>(false);
 
-  // перемещение по history сессии c помощью кнопок
-  //@ts-ignore
-  const onHistoryChange = React.useCallback((event: React.PopStateEvent<Window>) => {
-    isHistoryMove.current = true;
-    writeQueryStringToState(event.state.page);
-  }, []);
-
   // Запись query string в state при popstate
   const writeQueryStringToState = (queryString: string) => {
-    if (!queryString) return;
     const { sortBy, sort, category, p } = qs.parse(queryString) as unknown as QueryParams;
-    if (!sortBy) return;
-
     const sortObj = sortTypes.find((item) => item.type === sortBy) as ISortType;
-    dispatch(setSortType(sortObj));
-    dispatch(setCategory(parseInt(category)));
-    dispatch(setSortOrder(sort));
-    dispatch(setCurrentPage(Number(p)));
+
+    dispatch(setAll({ sortObj, sort, category: Number(category), p: Number(p) }));
   };
 
   React.useEffect(() => {
     // Возврат в то же место при перезагрузке страницы
     window.location.search && writeQueryStringToState(window.location.search.slice(1));
 
-    window.addEventListener('popstate', onHistoryChange);
+    window.addEventListener('popstate', handleHistoryChange);
     return () => {
-      window.removeEventListener('popstate', onHistoryChange);
+      window.removeEventListener('popstate', handleHistoryChange);
     };
   }, []);
 
@@ -78,7 +67,7 @@ const Main: React.FC = () => {
     window.scrollTo(0, 0);
   }, [categoryIndex, sortType, sortOrder, searchValue, currentPage]);
 
-  // запись в queryString при изменении фильтров
+  // запись в queryString при изменении фильтров + pushHistory
   React.useEffect(() => {
     const queryString = qs.stringify({
       category: categoryIndex,
@@ -87,11 +76,14 @@ const Main: React.FC = () => {
       p: currentPage,
     });
 
-    !isHistoryMove.current &&
-      window.history.pushState({ page: queryString }, '', `?${queryString}`);
-
+    !isHistoryMove.current && navigate(`?${queryString}`, { state: queryString });
     isHistoryMove.current = false;
   }, [categoryIndex, sortType, sortOrder, currentPage]);
+
+  const handleHistoryChange = React.useCallback((event: PopStateEvent) => {
+    isHistoryMove.current = true;
+    event.state.usr && writeQueryStringToState(event.state.usr);
+  }, []);
 
   if (error || (pizzas.length === 0 && status === Status.FULFILLED)) {
     return <NotFoundPizzas />;

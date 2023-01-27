@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { FilterSliceState, ISortType, ISortOrder } from './types';
+import { FilterSliceState, ISortType, ISortOrder, IsetAll } from './types';
 
 const initialState: FilterSliceState = {
   searchValue: '',
@@ -34,6 +34,14 @@ const filterSlice = createSlice({
     setPagesAmount(state, { payload }: PayloadAction<number>) {
       state.pagination.pagesAmount = payload;
     },
+
+    setAll(state, { payload }: PayloadAction<IsetAll>) {
+      state.sortType = payload.sortObj;
+      state.categoryIndex = payload.category;
+      state.sortOrder = payload.sort;
+      state.pagination.currentPage = payload.p;
+    },
+
     stateReset(state) {
       state.searchValue = '';
       state.categoryIndex = 0;
@@ -54,6 +62,7 @@ export const {
   setSortOrder,
   setSortType,
   stateReset,
+  setAll,
 } = filterSlice.actions;
 
 export default filterSlice.reducer;

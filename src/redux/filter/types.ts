@@ -6,6 +6,13 @@ export type ISortType = {
   type: ISortTypeTypes;
 };
 
+export type IsetAll = {
+  sortObj: ISortType;
+  sort: ISortOrder;
+  category: number;
+  p: number;
+};
+
 export type ISortOrder = 'asc' | 'desc';
 
 export interface FilterSliceState {
