@@ -88,25 +88,27 @@ const Main: React.FC = () => {
     event.state.usr && writeQueryStringToState(event.state.usr);
   }, []);
 
-  if (error || (pizzas.length === 0 && status === Status.FULFILLED)) {
-    return <NotFoundPizzas />;
-  }
-
   return (
     <div className="container">
       <div className="content__top">
         <Categories />
         <Sort />
       </div>
-      <h2 className="content__title">All Pizzas</h2>
-      <div className="content__items">
-        {status === Status.LOADING
-          ? new Array(pizzasPerPage).fill('').map((_, index) => <Skeleton key={index} />)
-          : pizzas.map((item) => {
-              return <PizzaBlock key={item.id} {...item} />;
-            })}
-      </div>
-      <Pagination />
+      {error || (pizzas.length === 0 && status === Status.FULFILLED) ? (
+        <NotFoundPizzas />
+      ) : (
+        <>
+          <h2 className="content__title">All Pizzas</h2>
+          <div className="content__items">
+            {status === Status.LOADING
+              ? new Array(pizzasPerPage).fill('').map((_, index) => <Skeleton key={index} />)
+              : pizzas.map((item) => {
+                  return <PizzaBlock key={item.id} {...item} />;
+                })}
+          </div>
+          <Pagination />
+        </>
+      )}
     </div>
   );
 };
