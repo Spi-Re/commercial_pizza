@@ -7,7 +7,7 @@ export const Skeleton: React.FC = () => (
     speed={2}
     width={280}
     height={457}
-    viewBox="0 0 280 467"
+    viewBox="0 0 280 465"
     backgroundColor="#f3f3f3"
     foregroundColor="#ecebeb">
     <circle cx="140" cy="125" r="125" />

@@ -30,6 +30,7 @@ const Main: React.FC = () => {
     sortType,
     sortOrder,
   } = useSelector(selectFilter);
+  const isFirst = React.useRef(true);
 
   const isHistoryMove = React.useRef<boolean>(false);
 
@@ -53,17 +54,19 @@ const Main: React.FC = () => {
 
   // получение пицц
   React.useEffect(() => {
-    dispatch(
-      fetchPizza({
-        categoryIndex: categoryIndex === 0 ? '' : String(categoryIndex),
-        searchValue,
-        sortType,
-        sortOrder,
-        currentPage,
-        pizzasPerPage,
-      }),
-    );
+    !isFirst.current &&
+      dispatch(
+        fetchPizza({
+          categoryIndex: categoryIndex === 0 ? '' : String(categoryIndex),
+          searchValue,
+          sortType,
+          sortOrder,
+          currentPage,
+          pizzasPerPage,
+        }),
+      );
 
+    isFirst.current = false;
     window.scrollTo(0, 0);
   }, [categoryIndex, sortType, sortOrder, searchValue, currentPage]);
 

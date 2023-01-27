@@ -8,6 +8,8 @@ const initialState: FilterSliceState = {
   sortType: { name: 'popularity', type: 'rating' },
   pagination: {
     currentPage: 1,
+    // FIXME: Исправить отображение страниц
+    // делить количество получаемых пицц на кол-во отображаемых
     pagesAmount: 3,
   },
 };
@@ -17,6 +19,7 @@ const filterSlice = createSlice({
   initialState,
   reducers: {
     setCategory(state, { payload }: PayloadAction<number>) {
+      payload === 0 && (state.pagination.pagesAmount = 3);
       state.categoryIndex = payload;
     },
     setSortType(state, { payload }: PayloadAction<ISortType>) {
@@ -32,7 +35,9 @@ const filterSlice = createSlice({
       state.pagination.currentPage = payload;
     },
     setPagesAmount(state, { payload }: PayloadAction<number>) {
-      state.pagination.pagesAmount = payload;
+      const currentPage = state.pagination.currentPage;
+
+      !payload && currentPage === 1 && (state.pagination.pagesAmount = 1);
     },
 
     setAll(state, { payload }: PayloadAction<IsetAll>) {

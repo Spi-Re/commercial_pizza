@@ -1,6 +1,7 @@
 .root {
   user-select: none;
   text-align: center;
+  padding-top: 20px;
 
   :global {
     .selected {
@@ -15,6 +16,7 @@
     display: inline-block;
     margin: 0 10px 15px 0;
     a {
+      color: #fe5f1e;
       border: 1px solid #fe5f1e;
       padding: 8px 15px;
       border-radius: 25px;
