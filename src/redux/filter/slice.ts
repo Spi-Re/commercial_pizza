@@ -29,7 +29,7 @@ const filterSlice = createSlice({
     onChangeSearchValue(state, { payload }: PayloadAction<string>) {
       // сервер ищет только по всем item
       state.categoryIndex = 0;
-      payload === '' && (state.categoryIndex = 3);
+      payload === '' && (state.pagination.pagesAmount = 3);
       state.searchValue = payload;
     },
     setCurrentPage(state, { payload }: PayloadAction<number>) {
