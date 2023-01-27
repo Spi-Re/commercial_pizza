@@ -6,7 +6,7 @@ const NotFound: React.FC = () => (
   <div className={styles.content}>
     <span>😕</span>
     <br />
-    <p>Страница не найдена</p>
+    <p>Page is not found</p>
   </div>
 );
 

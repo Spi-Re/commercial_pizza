@@ -7,6 +7,13 @@ body {
   background-color: $background;
 }
 
+.loading-words {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 50px auto 0;
+  text-align: center;
+}
+
 .wrapper {
   min-width: 370px;
   width: calc(100vw - 100px);

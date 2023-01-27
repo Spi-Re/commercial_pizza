@@ -12,7 +12,7 @@ import {
 
 // импорт страниц
 import Main from './pages/Main';
-import NotFound from './pages/NotFound';
+import NotFound from './pages/NotFound/NotFoundPage';
 import RootLayout from './layouts/RootLayout';
 
 import './scss/app.scss';
@@ -26,7 +26,7 @@ const router = createBrowserRouter(
       <Route
         path="cart"
         element={
-          <React.Suspense fallback={<div>Wait please...</div>}>
+          <React.Suspense fallback={<div className="loading-words">Wait please...</div>}>
             <Cart />
           </React.Suspense>
         }

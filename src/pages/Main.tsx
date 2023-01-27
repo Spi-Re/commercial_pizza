@@ -11,12 +11,12 @@ import { selectFilter } from '../redux/filter/selectors';
 import { fetchPizza } from '../redux/pizza/asyncSlice';
 import { Status } from '../redux/pizza/types';
 import { useAppDispatch, RootState } from '../redux/store';
+import { NotFoundPizzas } from './NotFound/NotFoundPizzas';
 
 type QueryParams = { sortBy: ISortTypeTypes; sort: ISortOrder; category: string; p: string };
 
 const pizzasPerPage = 4;
 
-// TODO: При клики на лого - возврат на главную | Нужен сброс фильтров.
 // TODO: Заглушку для ошибки при запросе.
 const Main: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -53,11 +53,10 @@ const Main: React.FC = () => {
   };
 
   React.useEffect(() => {
-    window.addEventListener('popstate', onHistoryChange);
-
     // Возврат в то же место при перезагрузке страницы
     window.location.search && writeQueryStringToState(window.location.search.slice(1));
 
+    window.addEventListener('popstate', onHistoryChange);
     return () => {
       window.removeEventListener('popstate', onHistoryChange);
     };
@@ -94,8 +93,8 @@ const Main: React.FC = () => {
     isHistoryMove.current = false;
   }, [categoryIndex, sortType, sortOrder, currentPage]);
 
-  if (error) {
-    return <>'unfortunately, pizzas weren't be downloaded. Please, try it later.'</>;
+  if (error || (pizzas.length === 0 && status === Status.FULFILLED)) {
+    return <NotFoundPizzas />;
   }
 
   return (
