@@ -8,8 +8,6 @@ const initialState: FilterSliceState = {
   sortType: { name: 'popularity', type: 'rating' },
   pagination: {
     currentPage: 1,
-    // FIXME: Исправить отображение страниц
-    // делить количество получаемых пицц на кол-во отображаемых
     pagesAmount: 3,
   },
 };
@@ -29,6 +27,8 @@ const filterSlice = createSlice({
       state.sortOrder = payload;
     },
     onChangeSearchValue(state, { payload }: PayloadAction<string>) {
+      // сервер ищет только по всем item
+      state.categoryIndex = 0;
       state.searchValue = payload;
     },
     setCurrentPage(state, { payload }: PayloadAction<number>) {
@@ -36,7 +36,7 @@ const filterSlice = createSlice({
     },
     setPagesAmount(state, { payload }: PayloadAction<number>) {
       const currentPage = state.pagination.currentPage;
-
+      // Потому что сервер не возвращает общее количество item
       !payload && currentPage === 1 && (state.pagination.pagesAmount = 1);
     },
 
