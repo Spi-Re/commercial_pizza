@@ -2,15 +2,15 @@ import React from 'react';
 import ReactPaginate from 'react-paginate';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setCurrentPage } from '../../redux/slices/filterSlice';
-import { RootState } from '../../redux/store';
+import { selectPagination } from '../../redux/filter/selectors';
+import { setCurrentPage } from '../../redux/filter/slice';
 
 import styles from './Pagination.module.scss';
 
-const Pagination: React.FC = React.memo(() => {
+export const Pagination: React.FC = React.memo(() => {
   const dispatch = useDispatch();
 
-  const { pagesAmount, currentPage } = useSelector((state: RootState) => state.filter.pagination);
+  const { pagesAmount, currentPage } = useSelector(selectPagination);
 
   return (
     <ReactPaginate
@@ -19,12 +19,9 @@ const Pagination: React.FC = React.memo(() => {
       nextLabel=">"
       onPageChange={(event) => dispatch(setCurrentPage(event.selected + 1))}
       pageRangeDisplayed={5}
-      // @ts-ignore
-      forcePage={parseInt(currentPage - 1)}
+      forcePage={currentPage - 1}
       pageCount={pagesAmount}
       previousLabel="<"
     />
   );
 });
-
-export default Pagination;

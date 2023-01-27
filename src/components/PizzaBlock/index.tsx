@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { useWhyDidYouUpdate } from 'ahooks';
-
 import { useSelector } from 'react-redux';
-import { onPlusPizza } from '../../redux/slices/cartSlice';
-import { RootState, useAppDispatch } from '../../redux/store';
+import { selectAllPizzasInCart } from '../../redux/filter/selectors';
+import { onPlusPizza } from '../../redux/cart/slice';
+import { useAppDispatch } from '../../redux/store';
 const doughTypes = ['thin crust', 'traditional'];
 
 type PizzaBlockProps = {
@@ -16,16 +15,21 @@ type PizzaBlockProps = {
   types: number[];
 };
 
-const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, imageUrl, title, price, sizes, types }) => {
+export const PizzaBlock: React.FC<PizzaBlockProps> = ({
+  id,
+  imageUrl,
+  title,
+  price,
+  sizes,
+  types,
+}) => {
   const dispatch = useAppDispatch();
   const [doughType, setDoughType] = React.useState<number>(0);
   const [pizzaSize, setPizzaSize] = React.useState<number>(0);
 
-  const pizzaInCart = useSelector((state: RootState) =>
-    state.cart.pizzas.filter((item) => item.id === id),
-  );
+  const allPizzasInCart = useSelector(selectAllPizzasInCart(id));
 
-  const obj = {
+  const pizzaObj = {
     id,
     personal_id: `${title}-${doughTypes[doughType]}-${sizes[pizzaSize]}`,
     title,
@@ -37,7 +41,7 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, imageUrl, title, price, siz
   };
 
   const handleAddToCart = () => {
-    dispatch(onPlusPizza(obj));
+    dispatch(onPlusPizza(pizzaObj));
   };
 
   return (
@@ -85,13 +89,11 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, imageUrl, title, price, siz
             />
           </svg>
           <span>Add</span>
-          {pizzaInCart.length > 0 && (
-            <i>{pizzaInCart.reduce((sum, item) => (sum += item.count), 0)}</i>
+          {allPizzasInCart.length > 0 && (
+            <i>{allPizzasInCart.reduce((sum, item) => (sum += item.count), 0)}</i>
           )}
         </button>
       </div>
     </div>
   );
 };
-
-export default PizzaBlock;

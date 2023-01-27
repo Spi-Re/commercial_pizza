@@ -1,11 +1,11 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { onClearCart } from '../redux/slices/cartSlice';
 import PizzaBlockCart from '../components/PizzaBlockCart';
 
 import emptyCart from '../assets/img/empty-cart.png';
 import { RootState } from '../redux/store';
+import { onClearCart } from '../redux/cart/slice';
 
 const Cart: React.FC = () => {
   const dispatch = useDispatch();

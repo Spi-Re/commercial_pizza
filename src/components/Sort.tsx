@@ -1,15 +1,10 @@
 import React from 'react';
 
 import { useSelector } from 'react-redux';
-import {
-  setSortType,
-  setSortOrder,
-  selectFilter,
-  ISortType,
-  ISortOrder,
-} from '../redux/slices/filterSlice';
-import { setCurrentPage } from '../redux/slices/filterSlice';
 import { useAppDispatch } from '../redux/store';
+import { setSortOrder, setSortType, setCurrentPage } from '../redux/filter/slice';
+import { ISortType, ISortOrder } from '../redux/filter/types';
+import { selectFilter } from '../redux/filter/selectors';
 
 export const sortTypes: ISortType[] = [
   { name: 'popularity', type: 'rating' },
@@ -22,7 +17,7 @@ const orderTypes = {
   asc: 'desc',
 };
 
-const Sort: React.FC = () => {
+export const Sort: React.FC = () => {
   const dispatch = useAppDispatch();
   const [isVisible, setIsVisible] = React.useState<boolean>(false);
 
@@ -95,5 +90,3 @@ const Sort: React.FC = () => {
     </div>
   );
 };
-
-export default Sort;

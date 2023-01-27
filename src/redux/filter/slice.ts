@@ -1,30 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
-
-export type ISortTypeTypes = 'rating' | 'price' | 'title';
-export type ISortTypeNames = 'popularity' | 'price' | 'alphabetically';
-
-export type ISortType = {
-  name: ISortTypeNames;
-  type: ISortTypeTypes;
-};
-
-export type ISortOrder = 'asc' | 'desc';
-
-interface FilterSliceState {
-  searchValue: string;
-  categoryIndexState: number;
-  sortOrder: ISortOrder;
-  sortType: ISortType;
-  pagination: {
-    currentPage: number;
-    pagesAmount: number;
-  };
-}
+import { FilterSliceState, ISortType, ISortOrder } from './types';
 
 const initialState: FilterSliceState = {
   searchValue: '',
-  categoryIndexState: 0,
+  categoryIndex: 0,
   sortOrder: 'asc',
   sortType: { name: 'popularity', type: 'rating' },
   pagination: {
@@ -38,7 +17,7 @@ const filterSlice = createSlice({
   initialState,
   reducers: {
     setCategory(state, { payload }: PayloadAction<number>) {
-      state.categoryIndexState = payload;
+      state.categoryIndex = payload;
     },
     setSortType(state, { payload }: PayloadAction<ISortType>) {
       state.sortType = payload;
@@ -55,11 +34,17 @@ const filterSlice = createSlice({
     setPagesAmount(state, { payload }: PayloadAction<number>) {
       state.pagination.pagesAmount = payload;
     },
+    stateReset(state) {
+      state.searchValue = '';
+      state.categoryIndex = 0;
+      state.sortOrder = 'asc';
+      state.sortType.name = 'popularity';
+      state.sortType.type = 'rating';
+      state.pagination.currentPage = 1;
+      state.pagination.pagesAmount = 3;
+    },
   },
 });
-
-export const selectFilter = (state: RootState) => state.filter;
-export const selectPagination = (state: RootState) => state.filter.pagination;
 
 export const {
   setCurrentPage,
@@ -68,6 +53,7 @@ export const {
   setCategory,
   setSortOrder,
   setSortType,
+  stateReset,
 } = filterSlice.actions;
 
 export default filterSlice.reducer;

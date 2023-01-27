@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { useDispatch } from 'react-redux';
-import { onDeletePizza, onMinusPizza, onPlusPizza, Pizza } from '../redux/slices/cartSlice';
+import { onDeletePizza, onMinusPizza, onPlusPizza } from '../redux/cart/slice';
+import { Pizza } from '../redux/cart/types';
 
 type PizzaBlockCartProps = {
   personal_id: string;
@@ -49,7 +50,7 @@ const PizzaBlockCart: React.FC<PizzaBlockCartProps> = ({
       </div>
       <div className="cart__item-count">
         <button
-          disabled={count === 0}
+          disabled={count === 1}
           onClick={handleMinusPizza}
           className="button button--outline button--circle cart__item-count-minus">
           <svg

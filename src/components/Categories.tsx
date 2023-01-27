@@ -1,14 +1,13 @@
 import React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setCategory } from '../redux/slices/filterSlice';
-import { setCurrentPage } from '../redux/slices/filterSlice';
-import { RootState } from '../redux/store';
+import { setCurrentPage, setCategory } from '../redux/filter/slice';
+import { selectFilter } from '../redux/filter/selectors';
 
 const pizzasCategories = ['All', 'Meat', 'Vegetarian', 'Grill', 'Spicy', 'Closed'];
 
-const Categories: React.FC = React.memo(() => {
-  const currentCategoryIndex = useSelector((state: RootState) => state.filter.categoryIndexState);
+export const Categories: React.FC = React.memo(() => {
+  const { categoryIndex } = useSelector(selectFilter);
   const dispatch = useDispatch();
 
   const handleChangeCategories = (index: number) => {
@@ -23,7 +22,7 @@ const Categories: React.FC = React.memo(() => {
             <li
               key={index}
               onClick={() => handleChangeCategories(index)}
-              className={currentCategoryIndex === index ? 'active' : ''}>
+              className={categoryIndex === index ? 'active' : ''}>
               {category}
             </li>
           );
@@ -32,5 +31,3 @@ const Categories: React.FC = React.memo(() => {
     </div>
   );
 });
-
-export default Categories;

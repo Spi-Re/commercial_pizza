@@ -13,16 +13,24 @@ import {
 // импорт страниц
 import Main from './pages/Main';
 import NotFound from './pages/NotFound';
-import Cart from './pages/Cart';
 import RootLayout from './layouts/RootLayout';
 
 import './scss/app.scss';
+
+const Cart = React.lazy(() => import('./pages/Cart'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Main />} />
-      <Route path="cart" element={<Cart />} />
+      <Route
+        path="cart"
+        element={
+          <React.Suspense fallback={<div>Wait please...</div>}>
+            <Cart />
+          </React.Suspense>
+        }
+      />
       <Route path="*" element={<NotFound />} />
     </Route>,
   ),
