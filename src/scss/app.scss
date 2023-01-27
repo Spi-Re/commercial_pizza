@@ -36,6 +36,10 @@ body {
     padding: 20px 0;
   }
 
+  @media (max-width: 530px) {
+    padding: 10px 0;
+  }
+
   &__title {
     font-size: 42px;
     font-weight: bold;

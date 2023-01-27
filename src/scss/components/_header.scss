@@ -8,13 +8,20 @@
     padding: 20px 0;
   }
 
+  @media (max-width: 530px) {
+    padding: 10px 0;
+  }
+
   .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     @media (max-width: 530px) {
-      flex-direction: column;
+      margin: 0 5px;
+      width: auto;
+      // flex-direction: column;
+      // justify-content: space-around;
     }
   }
 
@@ -22,7 +29,8 @@
     display: flex;
 
     @media (max-width: 530px) {
-      margin-bottom: 20px;
+      margin-left: -30px;
+      transform: scale(0.7);
     }
 
     img {

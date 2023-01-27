@@ -54,19 +54,17 @@ const Main: React.FC = () => {
 
   // получение пицц
   React.useEffect(() => {
-    !isFirst.current &&
-      dispatch(
-        fetchPizza({
-          categoryIndex: categoryIndex === 0 ? '' : String(categoryIndex),
-          searchValue,
-          sortType,
-          sortOrder,
-          currentPage,
-          pizzasPerPage,
-        }),
-      );
+    dispatch(
+      fetchPizza({
+        categoryIndex: categoryIndex === 0 ? '' : String(categoryIndex),
+        searchValue,
+        sortType,
+        sortOrder,
+        currentPage,
+        pizzasPerPage,
+      }),
+    );
 
-    isFirst.current = false;
     window.scrollTo(0, 0);
   }, [categoryIndex, sortType, sortOrder, searchValue, currentPage]);
 
